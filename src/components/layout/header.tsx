@@ -19,14 +19,14 @@ export function Header() {
             href="/" 
             className="flex items-center gap-2 transition-opacity hover:opacity-80"
           >
-            <div className="relative h-8 w-8">
+            <div className="relative h-8 w-8 flex-shrink-0">
               <img
                 src="/logo.svg"
                 alt="logo"
                 className="h-full w-full object-contain"
               />
             </div>
-            <span className="text-base font-semibold md:text-lg">
+            <span className="text-base font-semibold truncate md:text-lg">
               awesome-devops-cloud-ui
             </span>
           </Link>

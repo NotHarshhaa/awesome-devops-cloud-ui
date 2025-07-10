@@ -64,6 +64,12 @@
     @apply border-border;
   }
 
+  html, body {
+    @apply overflow-x-hidden;
+    width: 100%;
+    position: relative;
+  }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -85,4 +91,11 @@
 /* Prevent transition on page load */
 .no-transitions * {
   transition: none !important;
+}
+
+/* Mobile responsiveness fixes */
+@media (max-width: 640px) {
+  .container {
+    @apply px-4;
+  }
 }
