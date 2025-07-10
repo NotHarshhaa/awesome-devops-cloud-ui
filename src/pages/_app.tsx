@@ -4,7 +4,6 @@ import "@/styles/globals.css";
 
 import type { AppProps } from "next/app";
 import { DefaultSeo } from "next-seo";
-import Donation from "@/components/donation";
 import { Footer } from "@/components/layout/footer";
 import Head from "next/head";
 import { Header } from "@/components/layout/header";
@@ -13,6 +12,7 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 import { defaultSEO } from "@/lib/seo";
 import { useEffect, useState } from "react";
+import { ScrollToTop } from "@/components/ui/scroll-to-top";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [mounted, setMounted] = useState(false);
@@ -61,17 +61,17 @@ export default function App({ Component, pageProps }: AppProps) {
         attribute="class"
         defaultTheme="system"
         enableSystem
-        disableTransitionOnChange={false}
+        disableTransitionOnChange
       >
-        <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+        <div className="relative flex min-h-screen flex-col">
           <Header />
           <main className="flex-1">
             <Component {...pageProps} />
           </main>
-          <Donation />
           <Footer />
+          <ScrollToTop />
+          <Toaster position="bottom-right" />
         </div>
-        <Toaster position="bottom-right" />
       </ThemeProvider>
     </>
   );
