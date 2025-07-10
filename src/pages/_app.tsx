@@ -1,3 +1,5 @@
+"use client";
+
 import "@/styles/globals.css";
 
 import type { AppProps } from "next/app";
@@ -7,11 +9,32 @@ import { Footer } from "@/components/layout/footer";
 import Head from "next/head";
 import { Header } from "@/components/layout/header";
 import Script from "next/script";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "next-themes";
+import { Toaster } from "sonner";
 import { defaultSEO } from "@/lib/seo";
+import { useEffect, useState } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // Handle theme transition classes only on client side
+    const root = document.documentElement;
+    root.classList.add("no-transitions");
+
+    const timer = setTimeout(() => {
+      root.classList.remove("no-transitions");
+    }, 100);
+
+    setMounted(true);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Prevent flash during SSR by rendering nothing until mounted
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <>
       <Head>
@@ -37,15 +60,18 @@ export default function App({ Component, pageProps }: AppProps) {
       <ThemeProvider
         attribute="class"
         defaultTheme="system"
-        disableTransitionOnChange
+        enableSystem
+        disableTransitionOnChange={false}
       >
-        <Header />
-        <main>
-          <Component {...pageProps} />
-        </main>
-        <Donation />
-        <Footer />
-        <Toaster />
+        <div className="flex min-h-screen flex-col">
+          <Header />
+          <main className="flex-1">
+            <Component {...pageProps} />
+          </main>
+          <Donation />
+          <Footer />
+        </div>
+        <Toaster position="bottom-right" />
       </ThemeProvider>
     </>
   );

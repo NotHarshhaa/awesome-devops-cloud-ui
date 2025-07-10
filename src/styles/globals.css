@@ -68,3 +68,21 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Theme transition styles */
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+:root * {
+  @apply transition-colors duration-200;
+}
+
+/* Prevent transition on page load */
+.no-transitions * {
+  transition: none !important;
+}
