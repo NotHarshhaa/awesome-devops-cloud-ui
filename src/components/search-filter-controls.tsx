@@ -35,7 +35,7 @@ export function SearchFilterControls({
 
   return (
     <motion.div
-      className="flex w-full flex-col gap-4 px-4 sm:px-0"
+      className="w-full"
       variants={{
         hidden: { opacity: 0 },
         visible: {
@@ -46,22 +46,48 @@ export function SearchFilterControls({
         },
       }}
     >
-      <Input
-        type="text"
-        placeholder="Search items..."
-        value={searchQuery}
-        onChange={handleSearchChange}
-        className="w-full"
-      />
-      <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center">
-        <MultiSelect
-          options={categoryOptions}
-          value={selectedCategories}
-          onValueChange={setSelectedCategories}
-          placeholder="Filter by category"
-          className="w-full sm:max-w-[280px]"
+      {/* Mobile Layout */}
+      <div className="flex w-full flex-col gap-4 sm:hidden">
+        <Input
+          type="text"
+          placeholder="Search items..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="w-full"
         />
-        <Sort sortOption={sortOption} onSortChange={onSortChange} />
+        <div className="flex w-full flex-col gap-4">
+          <MultiSelect
+            options={categoryOptions}
+            value={selectedCategories}
+            onValueChange={setSelectedCategories}
+            placeholder="Filter by category"
+            className="w-full"
+          />
+          <Sort sortOption={sortOption} onSortChange={onSortChange} />
+        </div>
+      </div>
+
+      {/* Desktop Layout */}
+      <div className="hidden sm:flex sm:flex-row sm:items-center sm:gap-3">
+        <div className="w-[280px]">
+          <Input
+            type="text"
+            placeholder="Search items..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="w-full"
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <MultiSelect
+            options={categoryOptions}
+            value={selectedCategories}
+            onValueChange={setSelectedCategories}
+            placeholder="Filter by category"
+            className="w-[180px]"
+          />
+          <Sort sortOption={sortOption} onSortChange={onSortChange} />
+        </div>
       </div>
     </motion.div>
   );
