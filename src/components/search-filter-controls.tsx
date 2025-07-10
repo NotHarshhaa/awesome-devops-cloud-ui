@@ -1,3 +1,5 @@
+"use client";
+
 import Sort, { SortOption } from "@/components/sort";
 import { Input } from "@/components/ui/input";
 import { MultiSelect } from "@/components/ui/multi-select";
@@ -33,7 +35,7 @@ export function SearchFilterControls({
 
   return (
     <motion.div
-      className="flex flex-col sm:flex-row justify-between items-center gap-4"
+      className="flex w-full flex-col gap-4 px-4 sm:px-0"
       variants={{
         hidden: { opacity: 0 },
         visible: {
@@ -49,15 +51,15 @@ export function SearchFilterControls({
         placeholder="Search items..."
         value={searchQuery}
         onChange={handleSearchChange}
-        className="w-full sm:w-64"
+        className="w-full"
       />
-      <div className="w-full sm:w-auto flex flex-row items-center gap-4">
+      <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center">
         <MultiSelect
           options={categoryOptions}
           value={selectedCategories}
           onValueChange={setSelectedCategories}
           placeholder="Filter by category"
-          className="w-full sm:w-64"
+          className="w-full sm:max-w-[280px]"
         />
         <Sort sortOption={sortOption} onSortChange={onSortChange} />
       </div>

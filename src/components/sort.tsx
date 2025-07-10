@@ -58,7 +58,7 @@ export default function Sort({ sortOption, onSortChange }: SortProps) {
       defaultValue="date-desc"
       onValueChange={handleSortChange}
     >
-      <SelectTrigger className="flex items-center justify-between w-[200px]">
+      <SelectTrigger className="w-full sm:w-[200px]">
         <SelectValue>
           <span className="flex items-center">
             {selectedOption.icon}
