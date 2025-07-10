@@ -64,7 +64,7 @@ export function Footer() {
             <div className="flex flex-col items-center md:items-end gap-4">
               <div className="flex items-center gap-4">
                 <a
-                  href="https://github.com/NotHarshhaa/awesome-devops-cloud-ui"
+                  href="https://github.com/NotHarshhaa/awesome-devops-cloud"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 rounded-lg border bg-background px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"

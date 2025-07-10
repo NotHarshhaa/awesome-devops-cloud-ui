@@ -33,7 +33,7 @@ export function Header() {
 
           <div className="flex items-center gap-3 md:gap-4">
             <a
-              href="https://github.com/NotHarshhaa/awesome-devops-cloud-ui"
+              href="https://github.com/NotHarshhaa/awesome-devops-cloud"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 rounded-md px-2.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground md:px-3"

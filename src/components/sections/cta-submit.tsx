@@ -59,7 +59,7 @@ export function SubmitCTA() {
           <motion.div variants={itemVariants} className="w-full lg:w-auto">
             <Button asChild size="lg" className="w-full lg:w-auto text-base">
               <a
-                href="https://github.com/NotHarshhaa/awesome-devops-cloud-ui/blob/master/.github/pull_request_template.md"
+                href="https://github.com/NotHarshhaa/awesome-devops-cloud/blob/master/.github/pull_request_template.md"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center"

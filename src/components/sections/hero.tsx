@@ -103,7 +103,7 @@ export default function Hero() {
               Explore Tools
             </a>
             <a
-              href="https://github.com/NotHarshhaa/awesome-devops-cloud-ui"
+              href="https://github.com/NotHarshhaa/awesome-devops-cloud"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex min-w-[140px] items-center justify-center gap-2 rounded-lg border bg-background px-5 py-2.5 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground md:text-base"

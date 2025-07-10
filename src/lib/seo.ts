@@ -3,11 +3,11 @@ import { DefaultSeoProps } from "next-seo";
 export const defaultSEO: DefaultSeoProps = {
   title: "awesome-devops-cloud-ui",
   description: "A visual, categorized hub to explore DevOps & Cloud tools with ease",
-  canonical: "https://awesome-devops-cloud-ui.vercel.app/",
+  canonical: "https://awesomedevopsui.site/",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://awesome-devops-cloud-ui.vercel.app/",
+    url: "https://awesomedevopsui.site/",
     siteName: "awesome-devops-cloud-ui",
     images: [
       {

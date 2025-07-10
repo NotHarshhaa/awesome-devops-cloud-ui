@@ -17,7 +17,7 @@ export async function fetchAndParseReadme(): Promise<Resource[]> {
   try {
     const response = await octokit.repos.getContent({
       owner: "NotHarshhaa",
-      repo: "awesome-devops-cloud-ui",
+      repo: "awesome-devops-cloud",
       path: "README.md",
     });
 
