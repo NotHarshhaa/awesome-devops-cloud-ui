@@ -1,0 +1,19 @@
+name: "💡 Suggest a Feature"
+description: Propose a new feature or enhancement for the UI or project structure
+title: "[Feature] <your feature title here>"
+labels: [enhancement, suggestion]
+body:
+  - type: textarea
+    id: feature
+    attributes:
+      label: What would you like to see added?
+      placeholder: Explain the feature, section, or category you're suggesting
+  - type: textarea
+    id: value
+    attributes:
+      label: Why is this feature valuable?
+      placeholder: Describe how it will help the community
+  - type: input
+    id: examples
+    attributes:
+      label: Related links or inspiration (if any)

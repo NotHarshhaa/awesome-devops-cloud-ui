@@ -1,0 +1,19 @@
+name: "🐞 Bug Report"
+description: Report issues or incorrect links on the site
+title: "[Bug] <brief description>"
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What went wrong?
+      placeholder: Explain the problem
+  - type: input
+    id: link
+    attributes:
+      label: Broken link (if any)
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      placeholder: Tell us how to replicate the bug
