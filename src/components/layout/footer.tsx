@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Heart, Star, X } from "lucide-react";
+import { Github, Heart, Star, Twitter, Linkedin } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -18,7 +18,9 @@ function PolicyDialog({ isOpen, onClose, title, children }: PolicyDialogProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-h-[85vh] max-w-2xl overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-semibold tracking-tight">{title}</DialogTitle>
+          <DialogTitle className="text-2xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">
+            {title}
+          </DialogTitle>
         </DialogHeader>
         <div className="prose prose-sm dark:prose-invert max-w-none">
           {children}
@@ -32,92 +34,151 @@ export function Footer() {
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
 
+  const socialLinks = [
+    {
+      href: "https://github.com/NotHarshhaa/awesome-devops-cloud",
+      icon: Github,
+      label: "GitHub"
+    },
+    {
+      href: "https://twitter.com/NotHarshhaa",
+      icon: Twitter,
+      label: "Twitter"
+    },
+    {
+      href: "https://linkedin.com/in/NotHarshhaa",
+      icon: Linkedin,
+      label: "LinkedIn"
+    }
+  ];
+
   return (
-    <footer className="border-t bg-background/50 backdrop-blur-sm">
-      <div className="container mx-auto px-4 py-6 md:py-8">
-        <div className="flex flex-col gap-8">
+    <footer className="border-t bg-gradient-to-b from-background to-background/95 backdrop-blur-xl">
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        <div className="flex flex-col gap-10">
           {/* Main Footer Content */}
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
             {/* Logo and Description */}
-            <div className="flex flex-col items-center md:items-start gap-3">
+            <div className="flex flex-col gap-4">
               <Link 
                 href="/" 
-                className="group flex items-center gap-2.5 transition-opacity hover:opacity-90"
+                className="group flex items-center gap-2.5 transition-all duration-300 hover:opacity-90"
               >
-                <div className="relative h-8 w-8">
+                <motion.div 
+                  className="relative h-8 w-8"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   <img
                     src="/logo.svg"
                     alt="logo"
-                    className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                    className="h-full w-full object-contain"
                   />
-                </div>
-                <span className="text-lg font-semibold tracking-tight">
+                </motion.div>
+                <span className="text-lg font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">
                   awesome-devops-cloud-ui
                 </span>
               </Link>
-              <p className="text-sm text-muted-foreground text-center md:text-left max-w-xs">
-                A curated collection of DevOps & Cloud tools, beautifully organized and easily accessible.
+              <p className="text-sm text-muted-foreground max-w-md">
+                A curated collection of DevOps & Cloud tools, beautifully organized and easily accessible. Built with modern web technologies and designed for developers.
               </p>
             </div>
 
-            {/* Quick Links and Stats */}
-            <div className="flex flex-col items-center md:items-end gap-4">
-              <div className="flex items-center gap-4">
-                <a
+            {/* Quick Links */}
+            <div className="flex flex-col gap-4">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Quick Links</h3>
+              <div className="flex flex-col gap-2">
+                {socialLinks.map((link) => (
+                  <motion.a
+                    key={link.label}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
+                    whileHover={{ x: 2 }}
+                  >
+                    <link.icon className="h-4 w-4" />
+                    <span>{link.label}</span>
+                  </motion.a>
+                ))}
+              </div>
+            </div>
+
+            {/* Stats and Support */}
+            <div className="flex flex-col gap-4">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Support Us</h3>
+              <div className="flex flex-col gap-3">
+                <motion.div 
+                  className="flex items-center gap-2 rounded-lg border bg-background/50 backdrop-blur-sm px-4 py-2 text-sm"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Star className="h-4 w-4 text-yellow-500" />
+                  <span>1.2k Stars on GitHub</span>
+                </motion.div>
+                <motion.a
                   href="https://github.com/NotHarshhaa/awesome-devops-cloud"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 rounded-lg border bg-background px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  className="flex items-center gap-2 rounded-lg border bg-background/50 backdrop-blur-sm px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   <Github className="h-4 w-4" />
                   <span>Star on GitHub</span>
-                </a>
-                <div className="flex items-center gap-2 rounded-lg border bg-background px-4 py-2 text-sm">
-                  <Star className="h-4 w-4 text-yellow-500" />
-                  <span>1.2k</span>
-                </div>
+                </motion.a>
               </div>
             </div>
           </div>
 
           {/* Bottom Bar */}
           <div className="flex flex-col-reverse gap-4 md:flex-row md:items-center md:justify-between border-t pt-6 text-sm text-muted-foreground">
-            <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
+            <motion.div 
+              className="flex flex-col md:flex-row items-center gap-2 md:gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
               <span>
                 © {new Date().getFullYear()} awesome-devops-cloud-ui
               </span>
               <span className="hidden md:inline-block">•</span>
               <span className="flex items-center gap-1">
-                Made with <Heart className="h-3 w-3 text-red-500" /> by{" "}
+                Made with <Heart className="h-3 w-3 text-red-500 animate-pulse" /> by{" "}
                 <a
                   href="https://notharshhaa.site"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-medium underline-offset-4 hover:underline"
+                  className="font-medium bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80 hover:from-foreground/80 hover:to-foreground transition-all duration-300"
                 >
                   H A R S H H A A
                 </a>
               </span>
-            </div>
-            <div className="flex items-center justify-center md:justify-end gap-4">
+            </motion.div>
+            <motion.div 
+              className="flex items-center justify-center md:justify-end gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
               <button 
                 onClick={() => setShowPrivacy(true)}
-                className="text-sm text-muted-foreground hover:text-foreground hover:underline underline-offset-4"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 hover:underline underline-offset-4"
               >
-                Privacy
+                Privacy Policy
               </button>
               <button 
                 onClick={() => setShowTerms(true)}
-                className="text-sm text-muted-foreground hover:text-foreground hover:underline underline-offset-4"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 hover:underline underline-offset-4"
               >
-                Terms
+                Terms of Service
               </button>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
 
-      {/* Privacy Policy Dialog */}
+      {/* Policy Dialogs - Content remains the same */}
       <PolicyDialog
         isOpen={showPrivacy}
         onClose={() => setShowPrivacy(false)}
@@ -160,7 +221,6 @@ export function Footer() {
         </div>
       </PolicyDialog>
 
-      {/* Terms of Service Dialog */}
       <PolicyDialog
         isOpen={showTerms}
         onClose={() => setShowTerms(false)}
