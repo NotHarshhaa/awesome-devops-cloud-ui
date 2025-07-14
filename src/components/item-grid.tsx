@@ -2,6 +2,7 @@ import { Resource } from "@/hooks/use-readme";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useCallback } from "react";
 import ItemCard from "./item-card";
+import { FileX2 } from "lucide-react";
 
 type LayoutType = "compact" | "grid" | "row";
 
@@ -19,18 +20,18 @@ const standardAnimations = {
     animate: {
       opacity: 1,
       transition: {
-        duration: 0.3,
-        delayChildren: 0.1,
-        staggerChildren: 0.05,
+        duration: 0.2,
+        delayChildren: 0.05,
+        staggerChildren: 0.03,
       },
     },
     exit: { opacity: 0 },
   },
   emptyState: {
-    initial: { opacity: 0, y: 20 },
+    initial: { opacity: 0, y: 10 },
     animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -20 },
-    transition: { type: "spring", stiffness: 300, damping: 30 },
+    exit: { opacity: 0, y: -10 },
+    transition: { duration: 0.2 },
   },
 };
 
@@ -44,13 +45,13 @@ export function ItemGrid({
   const getGridClasses = useCallback(() => {
     switch (layoutType) {
       case "compact":
-        return "grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4";
+        return "grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-1";
       case "grid":
-        return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6";
+        return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 p-1";
       case "row":
-        return "grid-cols-1 gap-4";
+        return "grid-cols-1 gap-4 max-w-5xl mx-auto p-1";
       default:
-        return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6";
+        return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 p-1";
     }
   }, [layoutType]);
 
@@ -59,33 +60,24 @@ export function ItemGrid({
     return (
       <motion.div
         {...standardAnimations.emptyState}
-        className="text-center py-12 rounded-lg border border-dashed border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900/50"
+        className="flex flex-col items-center justify-center p-12 rounded-lg border border-border/40 bg-muted/5"
       >
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.3 }}
-          className="inline-flex justify-center items-center w-16 h-16 rounded-full bg-neutral-200 dark:bg-neutral-800 mb-4"
+          transition={{ duration: 0.2 }}
+          className="relative"
         >
-          <svg
-            className="w-8 h-8 text-neutral-500 dark:text-neutral-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.5}
-              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
+          <div className="absolute inset-0 bg-primary/5 blur-2xl rounded-full" />
+          <div className="relative bg-muted/10 w-16 h-16 rounded-full flex items-center justify-center border border-border/40">
+            <FileX2 className="w-8 h-8 text-muted-foreground/70" />
+          </div>
         </motion.div>
-        <p className="text-muted-foreground text-lg font-medium">
-          No items found matching your criteria.
-        </p>
-        <p className="text-muted-foreground text-sm mt-1">
-          Try adjusting your search or filter settings.
+        <h3 className="text-lg font-medium mt-4 text-foreground/90">
+          No Matching Results
+        </h3>
+        <p className="text-muted-foreground text-sm mt-1 text-center max-w-sm">
+          Try adjusting your search or filter settings to find what you're looking for.
         </p>
       </motion.div>
     );
@@ -101,18 +93,26 @@ export function ItemGrid({
           layout
         >
           {items.map((item) => (
-            <ItemCard
+            <motion.div
               key={`${item.id}-${layoutType}`}
-              id={item.id}
-              title={item.name}
-              description={item.description}
-              url={item.url}
-              category={item.category}
-              date={item.date}
-              isBookmarked={bookmarkedItems.includes(item.id)}
-              onBookmark={onBookmark}
-              layoutType={layoutType}
-            />
+              layout
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              <ItemCard
+                id={item.id}
+                title={item.name}
+                description={item.description}
+                url={item.url}
+                category={item.category}
+                date={item.date}
+                isBookmarked={bookmarkedItems.includes(item.id)}
+                onBookmark={onBookmark}
+                layoutType={layoutType}
+              />
+            </motion.div>
           ))}
         </motion.div>
       </AnimatePresence>

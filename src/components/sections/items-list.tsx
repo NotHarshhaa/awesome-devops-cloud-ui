@@ -214,8 +214,8 @@ export default function ItemList({
   }, [layoutType]);
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+    <div className="space-y-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-6 bg-muted/5 p-4 rounded-lg border border-border/40">
         <SearchFilterControls
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
@@ -224,24 +224,25 @@ export default function ItemList({
           setSelectedCategories={setSelectedCategories}
           sortOption={sortOption}
           onSortChange={handleSortChange}
+          className="w-full sm:w-auto"
         />
 
-        <div className="flex items-center justify-end w-full sm:w-auto mt-4 sm:mt-0">
+        <div className="flex items-center justify-end w-full sm:w-auto">
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.4, type: "spring" }}
+            transition={{ duration: 0.2 }}
           >
-            <TooltipProvider delayDuration={300}>
+            <TooltipProvider delayDuration={200}>
               <ToggleGroup
                 type="single"
                 value={layoutType}
                 onValueChange={handleLayoutChange}
-                className="relative border rounded-md bg-background/50 backdrop-blur-sm shadow-sm"
+                className="relative border rounded-md bg-background shadow-sm"
               >
                 <motion.div
                   layoutId="activeLayoutIndicator"
-                  className="absolute bottom-0 h-[3px] bg-primary z-10 transition-all duration-300"
+                  className="absolute bottom-0 h-0.5 bg-primary"
                   style={{
                     width: "24px",
                     left:
@@ -251,7 +252,7 @@ export default function ItemList({
                           ? "46px"
                           : "86px",
                   }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
                 />
 
                 <Tooltip>
@@ -259,16 +260,12 @@ export default function ItemList({
                     <ToggleGroupItem
                       value="compact"
                       aria-label="Compact Grid View"
-                      className="relative z-20 data-[state=on]:bg-primary/10 data-[state=on]:text-primary hover:bg-muted/70 transition-all"
+                      className="relative z-20 data-[state=on]:text-primary hover:bg-muted/50 transition-colors"
                     >
                       <Grid3X3 className="h-4 w-4" />
                     </ToggleGroupItem>
                   </TooltipTrigger>
-                  <TooltipContent
-                    side="bottom"
-                    align="center"
-                    className="font-medium"
-                  >
+                  <TooltipContent side="bottom" align="center">
                     Compact Grid
                   </TooltipContent>
                 </Tooltip>
@@ -278,16 +275,12 @@ export default function ItemList({
                     <ToggleGroupItem
                       value="grid"
                       aria-label="Grid View"
-                      className="relative z-20 data-[state=on]:bg-primary/10 data-[state=on]:text-primary hover:bg-muted/70 transition-all"
+                      className="relative z-20 data-[state=on]:text-primary hover:bg-muted/50 transition-colors"
                     >
                       <Grid2X2 className="h-4 w-4" />
                     </ToggleGroupItem>
                   </TooltipTrigger>
-                  <TooltipContent
-                    side="bottom"
-                    align="center"
-                    className="font-medium"
-                  >
+                  <TooltipContent side="bottom" align="center">
                     Standard Grid
                   </TooltipContent>
                 </Tooltip>
@@ -297,16 +290,12 @@ export default function ItemList({
                     <ToggleGroupItem
                       value="row"
                       aria-label="Row View"
-                      className="relative z-20 data-[state=on]:bg-primary/10 data-[state=on]:text-primary hover:bg-muted/70 transition-all"
+                      className="relative z-20 data-[state=on]:text-primary hover:bg-muted/50 transition-colors"
                     >
                       <List className="h-4 w-4" />
                     </ToggleGroupItem>
                   </TooltipTrigger>
-                  <TooltipContent
-                    side="bottom"
-                    align="center"
-                    className="font-medium"
-                  >
+                  <TooltipContent side="bottom" align="center">
                     List View
                   </TooltipContent>
                 </Tooltip>
@@ -322,28 +311,30 @@ export default function ItemList({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.2 }}
           layout
         >
           {isLoading ? (
-            <div className={`grid gap-6 ${getGridClasses()}`}>
+            <div className={`grid gap-5 p-1 ${getGridClasses()}`}>
               {[...Array(itemsPerPage)].map((_, index) => (
                 <Card
                   key={index}
-                  className={`flex flex-col h-full ${getCardHeightClass()} overflow-hidden`}
+                  className={`flex flex-col ${getCardHeightClass()} overflow-hidden border-border/40 bg-muted/5`}
                 >
-                  <CardHeader className="pb-4">
-                    <div className="flex justify-between items-start">
-                      <Skeleton className="h-6 w-3/4" />
-                      <Skeleton className="h-5 w-16" />
+                  <CardHeader className="pb-3 space-y-3">
+                    <div className="flex justify-between items-start gap-4">
+                      <Skeleton className="h-5 w-2/3" />
+                      <Skeleton className="h-5 w-16 rounded-full" />
                     </div>
                   </CardHeader>
-                  <CardContent className="flex-grow">
-                    <Skeleton className="h-4 w-full mb-2" />
-                    <Skeleton className="h-4 w-5/6" />
+                  <CardContent className="flex-grow space-y-2">
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-4/5" />
+                    <Skeleton className="h-4 w-2/3" />
                   </CardContent>
-                  <CardFooter className="pt-4">
-                    <Skeleton className="h-9 w-full" />
+                  <CardFooter className="pt-3 space-x-2">
+                    <Skeleton className="h-9 w-10 rounded-md" />
+                    <Skeleton className="h-9 flex-grow rounded-md" />
                   </CardFooter>
                 </Card>
               ))}
@@ -359,19 +350,21 @@ export default function ItemList({
         </motion.div>
       </AnimatePresence>
 
-      <PaginationControls
-        currentPage={currentPage}
-        totalPages={totalPages}
-        itemsPerPage={itemsPerPage}
-        handlePageChange={handlePageChange}
-        handleItemsPerPageChange={handleItemsPerPageChange}
-        itemsPerPageOptions={ITEMS_PER_PAGE_OPTIONS}
-      />
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+        <PaginationControls
+          currentPage={currentPage}
+          totalPages={totalPages}
+          itemsPerPage={itemsPerPage}
+          handlePageChange={handlePageChange}
+          handleItemsPerPageChange={handleItemsPerPageChange}
+          itemsPerPageOptions={ITEMS_PER_PAGE_OPTIONS}
+        />
 
-      <div className="text-sm text-muted-foreground text-center">
-        Showing {indexOfFirstItem + 1} -{" "}
-        {Math.min(indexOfLastItem, filteredItems.length)} of{" "}
-        {filteredItems.length} items
+        <div className="text-sm text-muted-foreground">
+          Showing {indexOfFirstItem + 1} -{" "}
+          {Math.min(indexOfLastItem, filteredItems.length)} of{" "}
+          {filteredItems.length} items
+        </div>
       </div>
     </div>
   );

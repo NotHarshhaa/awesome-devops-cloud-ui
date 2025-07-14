@@ -51,14 +51,12 @@ const ItemCard: React.FC<ItemCardProps> = ({
     switch (layoutType) {
       case "compact":
         return {
-          card: "h-[240px] group border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300",
+          card: "h-[240px] group border-neutral-200 dark:border-neutral-800 transition-all duration-200",
           container: "gap-1",
-          title:
-            "text-sm font-bold group-hover:text-primary transition-colors duration-300",
+          title: "text-sm font-bold text-foreground transition-colors duration-200",
           badge: "text-xs px-2 py-0 h-5 mt-1",
-          description:
-            "text-xs opacity-80 group-hover:opacity-100 transition-opacity duration-300 min-h-[2.5rem] line-clamp-5",
-          date: "text-xs opacity-60",
+          description: "text-xs text-muted-foreground min-h-[2.5rem] line-clamp-5",
+          date: "text-xs text-muted-foreground/70",
           button: "text-xs py-1 h-7",
           bookmarkBtn: "h-7 w-7",
           icon: "h-3.5 w-3.5",
@@ -71,14 +69,12 @@ const ItemCard: React.FC<ItemCardProps> = ({
         };
       case "row":
         return {
-          card: "h-[240px] md:h-[140px] group border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300",
+          card: "h-[240px] md:h-[140px] group border-neutral-200 dark:border-neutral-800 transition-all duration-200",
           container: "md:flex-row md:gap-4 gap-2",
-          title:
-            "text-base md:text-lg font-bold group-hover:text-primary transition-colors duration-300",
+          title: "text-base md:text-lg font-bold text-foreground transition-colors duration-200",
           badge: "text-xs md:text-sm",
-          description:
-            "text-sm opacity-90 group-hover:opacity-100 transition-opacity duration-300 line-clamp-2 md:line-clamp-2",
-          date: "text-xs opacity-70",
+          description: "text-sm text-muted-foreground line-clamp-2 md:line-clamp-2",
+          date: "text-xs text-muted-foreground/70",
           button: "text-sm",
           bookmarkBtn: "h-9 w-9",
           icon: "h-4 w-4",
@@ -92,14 +88,12 @@ const ItemCard: React.FC<ItemCardProps> = ({
       case "grid":
       default:
         return {
-          card: "h-[320px] group border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-md dark:hover:shadow-2xl dark:hover:shadow-neutral-900/20 transition-all duration-300",
+          card: "h-[320px] group border-neutral-200 dark:border-neutral-800 transition-all duration-200",
           container: "gap-3",
-          title:
-            "text-lg font-bold group-hover:text-primary transition-colors duration-300",
+          title: "text-lg font-bold text-foreground transition-colors duration-200",
           badge: "text-xs",
-          description:
-            "text-sm opacity-90 group-hover:opacity-100 transition-opacity duration-300 min-h-[4.5rem] line-clamp-5",
-          date: "text-xs opacity-70",
+          description: "text-sm text-muted-foreground min-h-[4.5rem] line-clamp-5",
+          date: "text-xs text-muted-foreground/70",
           button: "text-sm",
           bookmarkBtn: "h-10 w-10",
           icon: "h-4 w-4",
@@ -114,13 +108,12 @@ const ItemCard: React.FC<ItemCardProps> = ({
   }, [layoutType]);
 
   return (
-    <motion.div layout {...standardAnimations} className={styles.container}>
+    <motion.div 
+      layout 
+      {...standardAnimations} 
+      className={styles.container}
+    >
       <Card className={cn(`overflow-hidden relative`, styles.card)}>
-        {/* Decorative gradient highlight effect */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent dark:from-primary/10" />
-        </div>
-
         <div
           className={cn(
             "flex flex-col h-full",
