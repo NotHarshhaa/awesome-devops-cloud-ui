@@ -6,6 +6,7 @@ import { MultiSelect } from "@/components/ui/multi-select";
 import { motion } from "framer-motion";
 import type React from "react";
 import { useCallback } from "react";
+import { cn } from "@/lib/utils";
 
 interface SearchFilterControlsProps {
   searchQuery: string;
@@ -15,6 +16,7 @@ interface SearchFilterControlsProps {
   setSelectedCategories: (categories: string[]) => void;
   sortOption: SortOption;
   onSortChange: (option: SortOption) => void;
+  className?: string;
 }
 
 export function SearchFilterControls({
@@ -25,6 +27,7 @@ export function SearchFilterControls({
   setSelectedCategories,
   sortOption,
   onSortChange,
+  className,
 }: SearchFilterControlsProps) {
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +38,7 @@ export function SearchFilterControls({
 
   return (
     <motion.div
-      className="w-full"
+      className={cn("w-full", className)}
       variants={{
         hidden: { opacity: 0 },
         visible: {
