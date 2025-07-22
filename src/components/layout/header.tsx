@@ -1,30 +1,31 @@
 "use client";
 
 import Link from "next/link";
-import { Github } from "lucide-react";
+import { BookMarked, Github, FolderOpen } from "lucide-react";
 import { ModeToggle } from "@/components/ui/theme-toggle";
 import { motion } from "framer-motion";
+import { CollectionsDialog } from "@/components/collections/collections-dialog";
 
 export function Header() {
   return (
-    <motion.header 
+    <motion.header
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ 
+      transition={{
         type: "spring",
         stiffness: 100,
         damping: 20,
-        duration: 0.6 
+        duration: 0.6,
       }}
       className="sticky top-0 z-50 w-full border-b bg-gradient-to-b from-background/60 to-background/40 backdrop-blur-xl shadow-sm"
     >
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className="group flex items-center gap-2.5 transition-all duration-300 hover:opacity-90"
           >
-            <motion.div 
+            <motion.div
               className="relative h-8 w-8 flex-shrink-0"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -41,6 +42,15 @@ export function Header() {
           </Link>
 
           <div className="flex items-center gap-3 md:gap-4">
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Link
+                href="/collections"
+                className="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-all duration-300 hover:text-foreground hover:bg-muted/50 md:px-4"
+              >
+                <FolderOpen className="h-5 w-5" />
+                <span className="hidden md:inline-block">Collections</span>
+              </Link>
+            </motion.div>
             <motion.a
               href="https://github.com/NotHarshhaa/awesome-devops-cloud"
               target="_blank"

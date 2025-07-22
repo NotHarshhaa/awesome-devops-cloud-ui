@@ -1,16 +1,17 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from "react";
 
 /**
  * Types of events that can be tracked
  */
 type EventCategory =
-  | 'resource_interaction'
-  | 'search'
-  | 'filter'
-  | 'bookmark'
-  | 'navigation'
-  | 'contribute'
-  | 'ui_interaction';
+  | "resource_interaction"
+  | "search"
+  | "filter"
+  | "bookmark"
+  | "navigation"
+  | "contribute"
+  | "ui_interaction"
+  | "collection";
 
 /**
  * Analytics event interface
@@ -33,11 +34,11 @@ export function useAnalytics() {
   useEffect(() => {
     // This would typically initialize your analytics provider
     // For example: Google Analytics, Plausible, etc.
-    console.log('Analytics initialized');
+    console.log("Analytics initialized");
 
     // Return cleanup function
     return () => {
-      console.log('Analytics cleanup');
+      console.log("Analytics cleanup");
     };
   }, []);
 
@@ -45,14 +46,22 @@ export function useAnalytics() {
    * Track a user event
    */
   const trackEvent = useCallback(
-    ({ category, action, label, value, nonInteraction = false }: AnalyticsEvent) => {
+    ({
+      category,
+      action,
+      label,
+      value,
+      nonInteraction = false,
+    }: AnalyticsEvent) => {
       // In a real implementation, this would send the event to your analytics provider
-      console.log(`[Analytics] ${category}: ${action}${label ? ` (${label})` : ''}${value !== undefined ? ` - ${value}` : ''}`);
+      console.log(
+        `[Analytics] ${category}: ${action}${label ? ` (${label})` : ""}${value !== undefined ? ` - ${value}` : ""}`,
+      );
 
       // Example of how you would send this to Google Analytics
-      if (typeof window !== 'undefined' && 'gtag' in window) {
+      if (typeof window !== "undefined" && "gtag" in window) {
         // @ts-ignore - gtag might not be typed
-        window.gtag('event', action, {
+        window.gtag("event", action, {
           event_category: category,
           event_label: label,
           value: value,
@@ -60,7 +69,7 @@ export function useAnalytics() {
         });
       }
     },
-    []
+    [],
   );
 
   /**
@@ -68,75 +77,94 @@ export function useAnalytics() {
    */
   const trackPageView = useCallback((url: string, title?: string) => {
     // In a real implementation, this would send the pageview to your analytics provider
-    console.log(`[Analytics] Pageview: ${url}${title ? ` (${title})` : ''}`);
+    console.log(`[Analytics] Pageview: ${url}${title ? ` (${title})` : ""}`);
 
     // Example of how you would send this to Google Analytics
-    if (typeof window !== 'undefined' && 'gtag' in window) {
+    if (typeof window !== "undefined" && "gtag" in window) {
       // @ts-ignore - gtag might not be typed
-      window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID as string, {
-        page_path: url,
-        page_title: title,
-      });
+      window.gtag(
+        "config",
+        process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID as string,
+        {
+          page_path: url,
+          page_title: title,
+        },
+      );
     }
   }, []);
 
   /**
    * Track a resource view
    */
-  const trackResourceView = useCallback((resourceId: number, name: string, category: string) => {
-    trackEvent({
-      category: 'resource_interaction',
-      action: 'view',
-      label: `${category} - ${name}`,
-      value: resourceId,
-    });
-  }, [trackEvent]);
+  const trackResourceView = useCallback(
+    (resourceId: number, name: string, category: string) => {
+      trackEvent({
+        category: "resource_interaction",
+        action: "view",
+        label: `${category} - ${name}`,
+        value: resourceId,
+      });
+    },
+    [trackEvent],
+  );
 
   /**
    * Track a bookmark action
    */
-  const trackBookmark = useCallback((resourceId: number, name: string, isBookmarked: boolean) => {
-    trackEvent({
-      category: 'bookmark',
-      action: isBookmarked ? 'add' : 'remove',
-      label: name,
-      value: resourceId,
-    });
-  }, [trackEvent]);
+  const trackBookmark = useCallback(
+    (resourceId: number, name: string, isBookmarked: boolean) => {
+      trackEvent({
+        category: "bookmark",
+        action: isBookmarked ? "add" : "remove",
+        label: name,
+        value: resourceId,
+      });
+    },
+    [trackEvent],
+  );
 
   /**
    * Track a search action
    */
-  const trackSearch = useCallback((query: string, resultCount: number) => {
-    trackEvent({
-      category: 'search',
-      action: 'query',
-      label: query,
-      value: resultCount,
-    });
-  }, [trackEvent]);
+  const trackSearch = useCallback(
+    (query: string, resultCount: number) => {
+      trackEvent({
+        category: "search",
+        action: "query",
+        label: query,
+        value: resultCount,
+      });
+    },
+    [trackEvent],
+  );
 
   /**
    * Track a filter action
    */
-  const trackFilter = useCallback((filterType: string, value: string) => {
-    trackEvent({
-      category: 'filter',
-      action: 'apply',
-      label: `${filterType}: ${value}`,
-    });
-  }, [trackEvent]);
+  const trackFilter = useCallback(
+    (filterType: string, value: string) => {
+      trackEvent({
+        category: "filter",
+        action: "apply",
+        label: `${filterType}: ${value}`,
+      });
+    },
+    [trackEvent],
+  );
 
   /**
    * Track a layout change
    */
-  const trackLayoutChange = useCallback((layoutType: string) => {
-    trackEvent({
-      category: 'ui_interaction',
-      action: 'change_layout',
-      label: layoutType,
-    });
-  }, [trackEvent]);
+  const trackLayoutChange = useCallback(
+    (layoutType: string) => {
+      trackEvent({
+        category: "ui_interaction",
+        action: "change_layout",
+        label: layoutType,
+      });
+    },
+    [trackEvent],
+  );
 
   return {
     trackEvent,

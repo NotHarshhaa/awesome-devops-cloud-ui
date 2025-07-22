@@ -5,7 +5,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ArrowUpRight, Bookmark, Calendar, ExternalLink } from "lucide-react";
+import {
+  ArrowUpRight,
+  Bookmark,
+  Calendar,
+  ExternalLink,
+  FolderPlus,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,6 +24,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { AddToCollection } from "@/components/collections/add-to-collection";
 
 type LayoutType = "compact" | "grid" | "row";
 
@@ -230,6 +237,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
                 exit={{ scale: 0.9, opacity: 0 }}
                 whileTap={{ scale: 0.95 }}
                 key={`bookmark-${isBookmarked}-${layoutType}`}
+                className="flex-shrink-0"
               >
                 <TooltipProvider delayDuration={300}>
                   <Tooltip>
@@ -265,6 +273,29 @@ const ItemCard: React.FC<ItemCardProps> = ({
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
+              </motion.div>
+
+              {/* Add to Collection Button */}
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                whileTap={{ scale: 0.95 }}
+                key={`collection-${layoutType}`}
+                className="flex-shrink-0"
+              >
+                <AddToCollection
+                  resource={{
+                    id,
+                    name: title,
+                    description,
+                    url,
+                    category,
+                    date: date || "",
+                  }}
+                  variant="outline"
+                  size={layoutType === "compact" ? "sm" : "icon"}
+                />
               </motion.div>
             </AnimatePresence>
 
