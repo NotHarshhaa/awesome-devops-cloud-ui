@@ -20,6 +20,11 @@ export interface Collection {
   updatedAt: number;
   isPublic?: boolean;
   shareId?: string;
+  shareExpiry?: number; // Optional expiration timestamp for shared collections
+  sharePassword?: string; // Optional password for protected collections
+  color?: string; // Optional color for visual organization
+  pinned?: boolean; // Allow pinning collections to top
+  tags?: string[]; // Optional tags for organizing collections
 }
 
 interface UseCollectionsOptions {
@@ -28,16 +33,43 @@ interface UseCollectionsOptions {
 
 interface UseCollectionsReturn {
   collections: Collection[];
-  addCollection: (name: string, description: string) => string;
+  pinnedCollections: Collection[];
+  recentCollections: Collection[];
+  addCollection: (
+    name: string,
+    description: string,
+    options?: Partial<
+      Omit<
+        Collection,
+        "id" | "name" | "description" | "items" | "createdAt" | "updatedAt"
+      >
+    >,
+  ) => string;
   removeCollection: (collectionId: string) => void;
   updateCollection: (collection: Collection) => void;
   getCollection: (collectionId: string) => Collection | undefined;
   addToCollection: (collectionId: string, resourceId: number) => void;
   removeFromCollection: (collectionId: string, resourceId: number) => void;
+  addMultipleToCollection: (
+    collectionId: string,
+    resourceIds: number[],
+  ) => void;
   isInCollection: (collectionId: string, resourceId: number) => boolean;
-  makeCollectionPublic: (collectionId: string) => string;
+  togglePinCollection: (collectionId: string) => void;
+  duplicateCollection: (collectionId: string) => string;
+  makeCollectionPublic: (
+    collectionId: string,
+    options?: { expiryDays?: number; password?: string },
+  ) => string;
   makeCollectionPrivate: (collectionId: string) => void;
   getShareableLink: (collectionId: string) => string | null;
+  sortCollections: (sortBy: "name" | "date" | "size") => void;
+  searchCollections: (query: string) => Collection[];
+  getCollectionStats: (collectionId: string) => {
+    size: number;
+    lastUpdated: Date;
+    categories: Record<string, number>;
+  };
 }
 
 export function useCollections({
@@ -49,12 +81,43 @@ export function useCollections({
 
     try {
       const storedCollections = localStorage.getItem(storageKey);
-      return storedCollections ? JSON.parse(storedCollections) : [];
+
+      // Parse stored collections and handle schema migrations
+      const parsed = storedCollections ? JSON.parse(storedCollections) : [];
+
+      // Add validation and default values for all collections
+      return parsed.map((collection: any) => ({
+        id: collection.id || generateId(),
+        name: collection.name || "Untitled Collection",
+        description: collection.description || "",
+        items: Array.isArray(collection.items) ? collection.items : [],
+        createdAt: collection.createdAt || Date.now(),
+        updatedAt: collection.updatedAt || Date.now(),
+        isPublic: collection.isPublic || false,
+        shareId: collection.shareId || undefined,
+        shareExpiry: collection.shareExpiry || undefined,
+        sharePassword: collection.sharePassword || undefined,
+        color: collection.color || undefined,
+        pinned: collection.pinned || false,
+        tags: Array.isArray(collection.tags) ? collection.tags : [],
+      }));
     } catch (error) {
       console.warn(`Error loading collections from localStorage:`, error);
       return [];
     }
   });
+
+  // Derived state for pinned and recent collections using memoization
+  const pinnedCollections = useMemo(
+    () => collections.filter((c) => c.pinned),
+    [collections],
+  );
+
+  const recentCollections = useMemo(
+    () =>
+      [...collections].sort((a, b) => b.updatedAt - a.updatedAt).slice(0, 5),
+    [collections],
+  );
 
   // Persist collections to localStorage
   useEffect(() => {
@@ -73,17 +136,35 @@ export function useCollections({
     return Date.now().toString(36) + Math.random().toString(36).substring(2, 9);
   }, []);
 
-  // Add a new collection
+  // Add a new collection with additional options
   const addCollection = useCallback(
-    (name: string, description: string): string => {
+    (
+      name: string,
+      description: string,
+      options?: Partial<
+        Omit<
+          Collection,
+          "id" | "name" | "description" | "items" | "createdAt" | "updatedAt"
+        >
+      >,
+    ): string => {
+      // Validate input
+      if (!name.trim()) {
+        toast.error("Collection name cannot be empty");
+        throw new Error("Collection name cannot be empty");
+      }
+
       const id = generateId();
+      const timestamp = Date.now();
+
       const newCollection: Collection = {
         id,
-        name,
-        description,
+        name: name.trim(),
+        description: description.trim(),
         items: [],
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
+        createdAt: timestamp,
+        updatedAt: timestamp,
+        ...options,
       };
 
       setCollections((prev) => [...prev, newCollection]);
@@ -92,12 +173,53 @@ export function useCollections({
         category: "collection",
         action: "create",
         label: name,
+        value: options?.pinned ? 1 : 0,
       });
 
       toast.success(`Collection "${name}" created!`);
       return id;
     },
-    [generateId, trackEvent]
+    [generateId, trackEvent],
+  );
+
+  // Duplicate an existing collection
+  const duplicateCollection = useCallback(
+    (collectionId: string): string => {
+      const collection = collections.find((c) => c.id === collectionId);
+
+      if (!collection) {
+        toast.error("Collection not found");
+        return "";
+      }
+
+      const id = generateId();
+      const timestamp = Date.now();
+
+      const newCollection: Collection = {
+        ...collection,
+        id,
+        name: `${collection.name} (Copy)`,
+        createdAt: timestamp,
+        updatedAt: timestamp,
+        isPublic: false, // Reset sharing status for the duplicate
+        shareId: undefined,
+        shareExpiry: undefined,
+        sharePassword: undefined,
+      };
+
+      setCollections((prev) => [...prev, newCollection]);
+
+      trackEvent({
+        category: "collection",
+        action: "duplicate",
+        label: collection.name,
+        value: collection.items.length,
+      });
+
+      toast.success(`Collection duplicated: "${newCollection.name}"`);
+      return id;
+    },
+    [collections, generateId, trackEvent],
   );
 
   // Remove a collection
@@ -116,7 +238,7 @@ export function useCollections({
       });
       toast.success("Collection removed");
     },
-    [trackEvent]
+    [trackEvent],
   );
 
   // Update a collection
@@ -126,8 +248,8 @@ export function useCollections({
         prev.map((c) =>
           c.id === updatedCollection.id
             ? { ...updatedCollection, updatedAt: Date.now() }
-            : c
-        )
+            : c,
+        ),
       );
 
       trackEvent({
@@ -136,7 +258,7 @@ export function useCollections({
         label: updatedCollection.name,
       });
     },
-    [trackEvent]
+    [trackEvent],
   );
 
   // Get a collection by ID
@@ -144,7 +266,7 @@ export function useCollections({
     (collectionId: string) => {
       return collections.find((c) => c.id === collectionId);
     },
-    [collections]
+    [collections],
   );
 
   // Add a resource to a collection
@@ -171,10 +293,46 @@ export function useCollections({
             }
           }
           return c;
-        })
+        }),
       );
     },
-    [trackEvent]
+    [trackEvent],
+  );
+
+  // Add multiple resources to a collection at once
+  const addMultipleToCollection = useCallback(
+    (collectionId: string, resourceIds: number[]) => {
+      if (!resourceIds.length) return;
+
+      setCollections((prev) =>
+        prev.map((c) => {
+          if (c.id === collectionId) {
+            // Filter out already existing items
+            const newItems = resourceIds.filter((id) => !c.items.includes(id));
+
+            if (newItems.length) {
+              trackEvent({
+                category: "collection",
+                action: "add_multiple_items",
+                label: c.name,
+                value: newItems.length,
+              });
+
+              toast.success(
+                `Added ${newItems.length} items to "${c.name}" collection`,
+              );
+              return {
+                ...c,
+                items: [...c.items, ...newItems],
+                updatedAt: Date.now(),
+              };
+            }
+          }
+          return c;
+        }),
+      );
+    },
+    [trackEvent],
   );
 
   // Remove a resource from a collection
@@ -197,10 +355,10 @@ export function useCollections({
             };
           }
           return c;
-        })
+        }),
       );
     },
-    [trackEvent]
+    [trackEvent],
   );
 
   // Check if a resource is in a collection
@@ -209,13 +367,58 @@ export function useCollections({
       const collection = collections.find((c) => c.id === collectionId);
       return collection ? collection.items.includes(resourceId) : false;
     },
-    [collections]
+    [collections],
   );
 
-  // Make a collection public with a shareable ID
+  // Toggle pin status for a collection
+  const togglePinCollection = useCallback(
+    (collectionId: string) => {
+      setCollections((prev) =>
+        prev.map((c) => {
+          if (c.id === collectionId) {
+            const newPinnedState = !c.pinned;
+
+            trackEvent({
+              category: "collection",
+              action: newPinnedState ? "pin" : "unpin",
+              label: c.name,
+            });
+
+            toast.success(
+              newPinnedState
+                ? `Collection "${c.name}" pinned to top`
+                : `Collection "${c.name}" unpinned`,
+            );
+
+            return {
+              ...c,
+              pinned: newPinnedState,
+              updatedAt: Date.now(),
+            };
+          }
+          return c;
+        }),
+      );
+    },
+    [trackEvent],
+  );
+
+  // Make a collection public with a shareable ID and optional settings
   const makeCollectionPublic = useCallback(
-    (collectionId: string): string => {
+    (
+      collectionId: string,
+      options?: { expiryDays?: number; password?: string },
+    ): string => {
       const shareId = generateId();
+      const now = Date.now();
+
+      // Calculate expiry date if specified
+      const shareExpiry = options?.expiryDays
+        ? now + options.expiryDays * 24 * 60 * 60 * 1000
+        : undefined;
+
+      // Hash password if provided (in a real app, use proper hashing)
+      const sharePassword = options?.password || undefined;
 
       setCollections((prev) =>
         prev.map((c) => {
@@ -224,23 +427,30 @@ export function useCollections({
               category: "collection",
               action: "make_public",
               label: c.name,
+              value: shareExpiry ? 1 : 0,
             });
 
             return {
               ...c,
               isPublic: true,
               shareId,
-              updatedAt: Date.now(),
+              shareExpiry,
+              sharePassword,
+              updatedAt: now,
             };
           }
           return c;
-        })
+        }),
       );
 
-      toast.success("Collection is now shareable");
+      toast.success(
+        shareExpiry
+          ? `Collection is now shareable (expires in ${options?.expiryDays} days)`
+          : "Collection is now shareable",
+      );
       return shareId;
     },
-    [generateId, trackEvent]
+    [generateId, trackEvent],
   );
 
   // Make a collection private
@@ -263,38 +473,148 @@ export function useCollections({
             };
           }
           return c;
-        })
+        }),
       );
 
       toast.success("Collection is now private");
     },
-    [trackEvent]
+    [trackEvent],
   );
 
   // Get a shareable link for a collection
   const getShareableLink = useCallback(
     (collectionId: string): string | null => {
       const collection = collections.find((c) => c.id === collectionId);
-      if (collection && collection.isPublic && collection.shareId) {
-        const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
-        return `${baseUrl}/collection/${collection.shareId}`;
+
+      // Check if collection exists, is public, and has a share ID
+      if (!collection || !collection.isPublic || !collection.shareId) {
+        return null;
       }
-      return null;
+
+      // Check if the share link has expired
+      if (collection.shareExpiry && collection.shareExpiry < Date.now()) {
+        // Auto-update the collection to private since it's expired
+        setCollections((prev) =>
+          prev.map((c) => {
+            if (c.id === collectionId) {
+              return {
+                ...c,
+                isPublic: false,
+              };
+            }
+            return c;
+          }),
+        );
+        return null;
+      }
+
+      const baseUrl =
+        typeof window !== "undefined" ? window.location.origin : "";
+      const url = `${baseUrl}/collection/${collection.shareId}`;
+
+      // If password protected, add a flag to the URL
+      if (collection.sharePassword) {
+        return `${url}?protected=true`;
+      }
+
+      return url;
     },
-    [collections]
+    [collections],
+  );
+
+  // Sort collections by different criteria
+  const sortCollections = useCallback(
+    (sortBy: "name" | "date" | "size") => {
+      setCollections((prev) => {
+        const sortedCollections = [...prev];
+
+        switch (sortBy) {
+          case "name":
+            sortedCollections.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+
+          case "date":
+            sortedCollections.sort((a, b) => b.updatedAt - a.updatedAt);
+            break;
+
+          case "size":
+            sortedCollections.sort((a, b) => b.items.length - a.items.length);
+            break;
+
+          default:
+            return prev;
+        }
+
+        // Keep pinned collections at the top
+        return [
+          ...sortedCollections.filter((c) => c.pinned),
+          ...sortedCollections.filter((c) => !c.pinned),
+        ];
+      });
+
+      trackEvent({
+        category: "collection",
+        action: "sort",
+        label: sortBy,
+      });
+    },
+    [trackEvent],
+  );
+
+  // Search collections by name, description or tags
+  const searchCollections = useCallback(
+    (query: string): Collection[] => {
+      if (!query.trim()) return collections;
+
+      const lowerQuery = query.toLowerCase().trim();
+
+      return collections.filter(
+        (collection) =>
+          collection.name.toLowerCase().includes(lowerQuery) ||
+          (collection.description &&
+            collection.description.toLowerCase().includes(lowerQuery)) ||
+          (collection.tags &&
+            collection.tags.some((tag) =>
+              tag.toLowerCase().includes(lowerQuery),
+            )),
+      );
+    },
+    [collections],
+  );
+
+  // Get statistics for a collection
+  const getCollectionStats = useCallback(
+    (collectionId: string) => {
+      const collection = collections.find((c) => c.id === collectionId);
+
+      return {
+        size: collection?.items.length || 0,
+        lastUpdated: new Date(collection?.updatedAt || Date.now()),
+        categories: {} as Record<string, number>, // In a real app, fetch category information from resources
+      };
+    },
+    [collections],
   );
 
   return {
     collections,
+    pinnedCollections,
+    recentCollections,
     addCollection,
     removeCollection,
     updateCollection,
     getCollection,
     addToCollection,
     removeFromCollection,
+    addMultipleToCollection,
     isInCollection,
+    togglePinCollection,
+    duplicateCollection,
     makeCollectionPublic,
     makeCollectionPrivate,
     getShareableLink,
+    sortCollections,
+    searchCollections,
+    getCollectionStats,
   };
 }
