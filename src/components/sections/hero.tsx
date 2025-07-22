@@ -19,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -415,14 +416,14 @@ export default function Hero() {
               className="group relative overflow-hidden"
               asChild
             >
-              <a
+              <Link
                 href="/docs"
                 className="inline-flex items-center justify-center gap-2 text-sm"
               >
                 <Code className="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
                 <span>Read Documentation</span>
                 <ExternalLink className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
-              </a>
+              </Link>
             </Button>
           </motion.div>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { BookMarked, Github, FolderOpen } from "lucide-react";
+import { BookMarked, Github, FolderOpen, BookOpen } from "lucide-react";
 import { ModeToggle } from "@/components/ui/theme-toggle";
 import { motion } from "framer-motion";
 import { CollectionsDialog } from "@/components/collections/collections-dialog";
@@ -42,6 +42,15 @@ export function Header() {
           </Link>
 
           <div className="flex items-center gap-3 md:gap-4">
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Link
+                href="/docs"
+                className="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-all duration-300 hover:text-foreground hover:bg-muted/50 md:px-4"
+              >
+                <BookOpen className="h-5 w-5" />
+                <span className="hidden md:inline-block">Docs</span>
+              </Link>
+            </motion.div>
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               <Link
                 href="/collections"
