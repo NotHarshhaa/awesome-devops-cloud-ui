@@ -12,6 +12,12 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useMemo } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type LayoutType = "compact" | "grid" | "row";
 
@@ -35,6 +41,12 @@ const standardAnimations = {
   transition: { type: "spring", stiffness: 300, damping: 30 },
 };
 
+// Hover animations for interactive elements
+const hoverAnimation = {
+  scale: 1.02,
+  transition: { duration: 0.2 },
+};
+
 const ItemCard: React.FC<ItemCardProps> = ({
   id,
   title,
@@ -51,11 +63,13 @@ const ItemCard: React.FC<ItemCardProps> = ({
     switch (layoutType) {
       case "compact":
         return {
-          card: "h-[240px] group border-neutral-200 dark:border-neutral-800 transition-all duration-200",
+          card: "h-[240px] group border-neutral-200 dark:border-neutral-800 transition-all duration-200 hover:border-neutral-300 dark:hover:border-neutral-700 focus-within:ring-2 focus-within:ring-primary/40",
           container: "gap-1",
-          title: "text-sm font-bold text-foreground transition-colors duration-200",
+          title:
+            "text-sm font-bold text-foreground transition-colors duration-200",
           badge: "text-xs px-2 py-0 h-5 mt-1",
-          description: "text-xs text-muted-foreground min-h-[2.5rem] line-clamp-5",
+          description:
+            "text-xs text-muted-foreground min-h-[2.5rem] line-clamp-5",
           date: "text-xs text-muted-foreground/70",
           button: "text-xs py-1 h-7",
           bookmarkBtn: "h-7 w-7",
@@ -69,11 +83,13 @@ const ItemCard: React.FC<ItemCardProps> = ({
         };
       case "row":
         return {
-          card: "h-[240px] md:h-[140px] group border-neutral-200 dark:border-neutral-800 transition-all duration-200",
+          card: "h-[240px] md:h-[140px] group border-neutral-200 dark:border-neutral-800 transition-all duration-200 hover:border-neutral-300 dark:hover:border-neutral-700 focus-within:ring-2 focus-within:ring-primary/40",
           container: "md:flex-row md:gap-4 gap-2",
-          title: "text-base md:text-lg font-bold text-foreground transition-colors duration-200",
+          title:
+            "text-base md:text-lg font-bold text-foreground transition-colors duration-200",
           badge: "text-xs md:text-sm",
-          description: "text-sm text-muted-foreground line-clamp-2 md:line-clamp-2",
+          description:
+            "text-sm text-muted-foreground line-clamp-2 md:line-clamp-2",
           date: "text-xs text-muted-foreground/70",
           button: "text-sm",
           bookmarkBtn: "h-9 w-9",
@@ -88,11 +104,13 @@ const ItemCard: React.FC<ItemCardProps> = ({
       case "grid":
       default:
         return {
-          card: "h-[320px] group border-neutral-200 dark:border-neutral-800 transition-all duration-200",
+          card: "h-[320px] group border-neutral-200 dark:border-neutral-800 transition-all duration-200 hover:border-neutral-300 dark:hover:border-neutral-700 focus-within:ring-2 focus-within:ring-primary/40",
           container: "gap-3",
-          title: "text-lg font-bold text-foreground transition-colors duration-200",
+          title:
+            "text-lg font-bold text-foreground transition-colors duration-200",
           badge: "text-xs",
-          description: "text-sm text-muted-foreground min-h-[4.5rem] line-clamp-5",
+          description:
+            "text-sm text-muted-foreground min-h-[4.5rem] line-clamp-5",
           date: "text-xs text-muted-foreground/70",
           button: "text-sm",
           bookmarkBtn: "h-10 w-10",
@@ -108,10 +126,11 @@ const ItemCard: React.FC<ItemCardProps> = ({
   }, [layoutType]);
 
   return (
-    <motion.div 
-      layout 
-      {...standardAnimations} 
+    <motion.div
+      layout
+      {...standardAnimations}
       className={styles.container}
+      whileHover={hoverAnimation}
     >
       <Card className={cn(`overflow-hidden relative`, styles.card)}>
         <div
@@ -212,26 +231,40 @@ const ItemCard: React.FC<ItemCardProps> = ({
                 whileTap={{ scale: 0.95 }}
                 key={`bookmark-${isBookmarked}-${layoutType}`}
               >
-                <Button
-                  variant={isBookmarked ? "default" : "outline"}
-                  size={layoutType === "compact" ? "sm" : "icon"}
-                  onClick={() => onBookmark(id)}
-                  className={cn(
-                    "transition-all duration-300 flex-shrink-0",
-                    styles.bookmarkBtn,
-                    isBookmarked
-                      ? "bg-yellow-500 hover:bg-yellow-600 text-white border-yellow-600"
-                      : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:border-gray-400 dark:hover:border-gray-600",
-                  )}
-                >
-                  <Bookmark
-                    className={cn(
-                      styles.icon,
-                      "transition-transform duration-300",
-                      isBookmarked ? "scale-110" : "",
-                    )}
-                  />
-                </Button>
+                <TooltipProvider delayDuration={300}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant={isBookmarked ? "default" : "outline"}
+                        size={layoutType === "compact" ? "sm" : "icon"}
+                        onClick={() => onBookmark(id)}
+                        aria-label={
+                          isBookmarked
+                            ? "Remove from bookmarks"
+                            : "Add to bookmarks"
+                        }
+                        className={cn(
+                          "transition-all duration-300 flex-shrink-0",
+                          styles.bookmarkBtn,
+                          isBookmarked
+                            ? "bg-yellow-500 hover:bg-yellow-600 text-white border-yellow-600"
+                            : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:border-gray-400 dark:hover:border-gray-600",
+                        )}
+                      >
+                        <Bookmark
+                          className={cn(
+                            styles.icon,
+                            "transition-transform duration-300",
+                            isBookmarked ? "scale-110" : "",
+                          )}
+                        />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top">
+                      {isBookmarked ? "Remove bookmark" : "Add bookmark"}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </motion.div>
             </AnimatePresence>
 
@@ -250,18 +283,23 @@ const ItemCard: React.FC<ItemCardProps> = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center"
+                aria-label={`Visit ${title} resource`}
               >
                 <span className="relative z-10 flex items-center">
                   {layoutType === "compact" ? "View" : "View Resource"}
                   <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
                     {layoutType === "compact" ? (
-                      <ArrowUpRight className={cn("ml-1", styles.icon)} />
+                      <ArrowUpRight
+                        className={cn("ml-1", styles.icon)}
+                        aria-hidden="true"
+                      />
                     ) : (
                       <ExternalLink
                         className={cn(
                           "ml-1.5",
                           styles.icon === "h-5 w-5" ? "h-4 w-4" : styles.icon,
                         )}
+                        aria-hidden="true"
                       />
                     )}
                   </span>

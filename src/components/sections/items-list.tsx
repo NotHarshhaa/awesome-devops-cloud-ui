@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/tooltip";
 import { isValid, parseISO } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
-import { Grid2X2, Grid3X3, List } from "lucide-react";
+import { Grid2X2, Grid3X3, Info, List, Loader2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
@@ -21,6 +21,7 @@ import { ItemGrid } from "../item-grid";
 import { PaginationControls } from "../pagination-controls";
 import { SearchFilterControls } from "../search-filter-controls";
 import { Skeleton } from "../ui/skeleton";
+import { Button } from "../ui/button";
 
 const ITEMS_PER_PAGE_OPTIONS = [18, 27, 36, 45];
 
@@ -48,7 +49,9 @@ export default function ItemList({
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [sortOption, setSortOption] = useState<SortOption>("date-desc");
   const [isLoading, setIsLoading] = useState(true);
+  const [isFiltering, setIsFiltering] = useState(false);
   const [layoutType, setLayoutType] = useState<LayoutType>("grid");
+  const [error, setError] = useState<string | null>(null);
 
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const { bookmarkedItems, toggleBookmark } = useBookmarks();
@@ -99,27 +102,37 @@ export default function ItemList({
   );
 
   const filterAndSortItems = useCallback(() => {
-    let filtered = [...initialItems];
+    setIsFiltering(true);
+    setError(null);
 
-    if (debouncedSearchQuery) {
-      const lowercaseQuery = debouncedSearchQuery.toLowerCase();
-      filtered = filtered.filter(
-        (item) =>
-          (item.name?.toLowerCase() || "").includes(lowercaseQuery) ||
-          (item.description?.toLowerCase() || "").includes(lowercaseQuery),
-      );
+    try {
+      let filtered = [...initialItems];
+
+      if (debouncedSearchQuery) {
+        const lowercaseQuery = debouncedSearchQuery.toLowerCase();
+        filtered = filtered.filter(
+          (item) =>
+            (item.name?.toLowerCase() || "").includes(lowercaseQuery) ||
+            (item.description?.toLowerCase() || "").includes(lowercaseQuery),
+        );
+      }
+
+      if (selectedCategories.length > 0) {
+        filtered = filtered.filter((item) =>
+          selectedCategories.includes(item.category),
+        );
+      }
+
+      const sortedItems = sortItems(filtered);
+
+      setFilteredItems(sortedItems);
+      setCurrentPage(1);
+    } catch (err) {
+      console.error("Error filtering items:", err);
+      setError("An error occurred while filtering items. Please try again.");
+    } finally {
+      setIsFiltering(false);
     }
-
-    if (selectedCategories.length > 0) {
-      filtered = filtered.filter((item) =>
-        selectedCategories.includes(item.category),
-      );
-    }
-
-    const sortedItems = sortItems(filtered);
-
-    setFilteredItems(sortedItems);
-    setCurrentPage(1);
   }, [initialItems, debouncedSearchQuery, selectedCategories, sortItems]);
 
   useEffect(() => {
@@ -225,6 +238,7 @@ export default function ItemList({
           sortOption={sortOption}
           onSortChange={handleSortChange}
           className="w-full sm:w-auto"
+          isLoading={isFiltering}
         />
 
         <div className="flex items-center justify-end w-full sm:w-auto">
@@ -339,6 +353,48 @@ export default function ItemList({
                 </Card>
               ))}
             </div>
+          ) : error ? (
+            <div className="flex flex-col items-center justify-center p-8 text-center">
+              <div className="bg-red-50 dark:bg-red-950/30 p-4 rounded-lg border border-red-200 dark:border-red-800 flex items-center gap-3 mb-4">
+                <Info className="h-5 w-5 text-red-500" />
+                <p className="text-red-700 dark:text-red-400">{error}</p>
+              </div>
+              <Button
+                variant="outline"
+                onClick={filterAndSortItems}
+                className="mt-4"
+              >
+                Try Again
+              </Button>
+            </div>
+          ) : isFiltering ? (
+            <div className="flex flex-col items-center justify-center py-12">
+              <div className="flex items-center gap-2">
+                <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                <p className="text-muted-foreground">Filtering resources...</p>
+              </div>
+            </div>
+          ) : filteredItems.length === 0 ? (
+            <div className="flex flex-col items-center justify-center p-8 text-center">
+              <div className="bg-muted/30 p-6 rounded-lg border border-border/60 max-w-md">
+                <h3 className="text-lg font-medium mb-2">
+                  No matching resources
+                </h3>
+                <p className="text-muted-foreground mb-4">
+                  Try adjusting your filters or search term to find what you're
+                  looking for.
+                </p>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setSearchQuery("");
+                    setSelectedCategories([]);
+                  }}
+                >
+                  Reset Filters
+                </Button>
+              </div>
+            </div>
           ) : (
             <ItemGrid
               items={currentItems}
@@ -350,22 +406,24 @@ export default function ItemList({
         </motion.div>
       </AnimatePresence>
 
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-        <PaginationControls
-          currentPage={currentPage}
-          totalPages={totalPages}
-          itemsPerPage={itemsPerPage}
-          handlePageChange={handlePageChange}
-          handleItemsPerPageChange={handleItemsPerPageChange}
-          itemsPerPageOptions={ITEMS_PER_PAGE_OPTIONS}
-        />
+      {filteredItems.length > 0 && !isLoading && !error && !isFiltering && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            itemsPerPage={itemsPerPage}
+            handlePageChange={handlePageChange}
+            handleItemsPerPageChange={handleItemsPerPageChange}
+            itemsPerPageOptions={ITEMS_PER_PAGE_OPTIONS}
+          />
 
-        <div className="text-sm text-muted-foreground">
-          Showing {indexOfFirstItem + 1} -{" "}
-          {Math.min(indexOfLastItem, filteredItems.length)} of{" "}
-          {filteredItems.length} items
+          <div className="text-sm text-muted-foreground">
+            Showing {indexOfFirstItem + 1} -{" "}
+            {Math.min(indexOfLastItem, filteredItems.length)} of{" "}
+            {filteredItems.length} items
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

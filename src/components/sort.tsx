@@ -12,9 +12,14 @@ export type SortOption = "date-desc" | "date-asc" | "name-asc" | "name-desc";
 interface SortProps {
   sortOption: SortOption;
   onSortChange: (option: SortOption) => void;
+  disabled?: boolean;
 }
 
-export default function Sort({ sortOption, onSortChange }: SortProps) {
+export default function Sort({
+  sortOption,
+  onSortChange,
+  disabled = false,
+}: SortProps) {
   // Predefined sort options with clear labels and matching icons
   const sortOptions = [
     {
@@ -57,8 +62,11 @@ export default function Sort({ sortOption, onSortChange }: SortProps) {
       value={sortOption}
       defaultValue="date-desc"
       onValueChange={handleSortChange}
+      disabled={disabled}
     >
-      <SelectTrigger className="w-full sm:w-[200px]">
+      <SelectTrigger
+        className={`w-full sm:w-[200px] ${disabled ? "opacity-70 cursor-not-allowed" : ""}`}
+      >
         <SelectValue>
           <span className="flex items-center">
             {selectedOption.icon}
