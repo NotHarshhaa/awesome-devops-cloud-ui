@@ -32,7 +32,11 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const multiSelectVariants = cva(
   "m-1 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300",
@@ -154,7 +158,8 @@ export const MultiSelect = React.forwardRef<
     },
     ref,
   ) => {
-    const [selectedValues, setSelectedValues] = React.useState<string[]>(defaultValue);
+    const [selectedValues, setSelectedValues] =
+      React.useState<string[]>(defaultValue);
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
     const [searchQuery, setSearchQuery] = React.useState("");
     const [recentlyUsed, setRecentlyUsed] = React.useState<string[]>([]);
@@ -168,12 +173,12 @@ export const MultiSelect = React.forwardRef<
 
     const updateRecentlyUsed = (value: string) => {
       if (!showRecentlyUsed) return;
-      
+
       const newRecent = [
         value,
         ...recentlyUsed.filter((v) => v !== value),
       ].slice(0, maxRecentItems);
-      
+
       setRecentlyUsed(newRecent);
       localStorage.setItem("multiselect-recent", JSON.stringify(newRecent));
     };
@@ -220,17 +225,20 @@ export const MultiSelect = React.forwardRef<
     };
 
     const filteredOptions = options.filter((option) =>
-      option.label.toLowerCase().includes(searchQuery.toLowerCase())
+      option.label.toLowerCase().includes(searchQuery.toLowerCase()),
     );
 
     const groupedOptions = showGroups
-      ? filteredOptions.reduce((groups, option) => {
-          const group = option.group || "Other";
-          return {
-            ...groups,
-            [group]: [...(groups[group] || []), option],
-          };
-        }, {} as Record<string, typeof options>)
+      ? filteredOptions.reduce(
+          (groups, option) => {
+            const group = option.group || "Other";
+            return {
+              ...groups,
+              [group]: [...(groups[group] || []), option],
+            };
+          },
+          {} as Record<string, typeof options>,
+        )
       : { "": filteredOptions };
 
     return (
@@ -246,12 +254,12 @@ export const MultiSelect = React.forwardRef<
             onClick={handleTogglePopover}
             variant="outline"
             className={cn(
-              "relative w-full justify-between",
-              selectedValues.length > 0 ? "h-auto" : "",
-              className
+              "relative w-full justify-between z-10",
+              selectedValues.length > 0 ? "h-auto min-h-9" : "min-h-9",
+              className,
             )}
           >
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-1 overflow-hidden mr-1">
               {selectedValues.length > 0 ? (
                 <>
                   {selectedValues.slice(0, maxCount).map((value) => {
@@ -262,7 +270,7 @@ export const MultiSelect = React.forwardRef<
                         variant={variant === "inverted" ? "default" : variant}
                         className={cn(
                           multiSelectVariants({ variant }),
-                          "rounded-md px-1 py-0"
+                          "rounded-md px-1 py-0",
                         )}
                       >
                         {option?.icon && (
@@ -297,7 +305,7 @@ export const MultiSelect = React.forwardRef<
                       variant={variant === "inverted" ? "default" : variant}
                       className={cn(
                         multiSelectVariants({ variant }),
-                        "rounded-md px-1 py-0"
+                        "rounded-md px-1 py-0",
                       )}
                     >
                       +{selectedValues.length - maxCount} more
@@ -305,27 +313,31 @@ export const MultiSelect = React.forwardRef<
                   )}
                 </>
               ) : (
-                <span className="flex items-center gap-2 text-muted-foreground">
-                  <Filter className="h-4 w-4" />
+                <span className="flex items-center gap-2 text-muted-foreground truncate text-xs sm:text-sm">
+                  <Filter className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                   {placeholder}
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 flex-shrink-0">
               {showCount && selectedValues.length > 0 && (
-                <Badge variant="secondary" className="rounded-md px-1 py-0">
+                <Badge
+                  variant="secondary"
+                  className="rounded-md px-1 py-0 text-xs"
+                >
                   {selectedValues.length}
                 </Badge>
               )}
-              <ChevronDown className="h-4 w-4 opacity-50" />
+              <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4 opacity-50" />
             </div>
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-full min-w-[var(--radix-popover-trigger-width)] p-0"
+          className="w-full min-w-[var(--radix-popover-trigger-width)] p-0 z-50"
           align="start"
+          sideOffset={5}
         >
-          <Command className="max-h-[300px]">
+          <Command className="max-h-[300px] overflow-y-auto overflow-x-hidden">
             {showSearch && (
               <div className="flex items-center border-b px-3">
                 <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
@@ -367,16 +379,16 @@ export const MultiSelect = React.forwardRef<
                         onSelect={() => toggleOption(option.value)}
                       >
                         <div className="flex items-center gap-2">
-                          {option.icon && (
-                            <option.icon className="h-4 w-4" />
-                          )}
+                          {option.icon && <option.icon className="h-4 w-4" />}
                           <span>{option.label}</span>
                           {option.description && (
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <Tag className="h-3 w-3 cursor-help opacity-50" />
                               </TooltipTrigger>
-                              <TooltipContent>{option.description}</TooltipContent>
+                              <TooltipContent>
+                                {option.description}
+                              </TooltipContent>
                             </Tooltip>
                           )}
                         </div>
@@ -385,7 +397,7 @@ export const MultiSelect = React.forwardRef<
                             "ml-auto h-4 w-4",
                             selectedValues.includes(option.value)
                               ? "opacity-100"
-                              : "opacity-0"
+                              : "opacity-0",
                           )}
                         />
                       </CommandItem>
@@ -412,7 +424,9 @@ export const MultiSelect = React.forwardRef<
                             <TooltipTrigger asChild>
                               <Tag className="h-3 w-3 cursor-help opacity-50" />
                             </TooltipTrigger>
-                            <TooltipContent>{option.description}</TooltipContent>
+                            <TooltipContent>
+                              {option.description}
+                            </TooltipContent>
                           </Tooltip>
                         )}
                       </div>
@@ -421,7 +435,7 @@ export const MultiSelect = React.forwardRef<
                           "ml-auto h-4 w-4",
                           selectedValues.includes(option.value)
                             ? "opacity-100"
-                            : "opacity-0"
+                            : "opacity-0",
                         )}
                       />
                     </CommandItem>

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 interface DebounceOptions {
   delay: number;
@@ -6,11 +6,13 @@ interface DebounceOptions {
   leading?: boolean;
 }
 
-export function useDebounce<T>(
-  value: T,
-  options: number | DebounceOptions
-): T {
-  const { delay, maxWait, leading = false } = typeof options === 'number' 
+// Original version - debounces a value
+export function useDebounce<T>(value: T, options: number | DebounceOptions): T {
+  const {
+    delay,
+    maxWait,
+    leading = false,
+  } = typeof options === "number"
     ? { delay: options, maxWait: undefined, leading: false }
     : options;
 
@@ -41,7 +43,10 @@ export function useDebounce<T>(
 
     // Handle maxWait
     if (maxWait && !maxTimeoutRef.current) {
-      const timeoutDuration = Math.max(0, maxWait - (Date.now() - lastCallRef.current));
+      const timeoutDuration = Math.max(
+        0,
+        maxWait - (Date.now() - lastCallRef.current),
+      );
       maxTimeoutRef.current = setTimeout(() => {
         setDebouncedValue(value);
         lastCallRef.current = Date.now();
@@ -61,4 +66,26 @@ export function useDebounce<T>(
   }, [value, delay, maxWait, leading]);
 
   return debouncedValue;
+}
+
+// New version - debounces a function
+export function useDebounceCallback<T extends (...args: any[]) => any>(
+  callback: T,
+  delay: number,
+): (...args: Parameters<T>) => void {
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  return useCallback(
+    (...args: Parameters<T>) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = setTimeout(() => {
+        callback(...args);
+        timeoutRef.current = null;
+      }, delay);
+    },
+    [callback, delay],
+  );
 }
