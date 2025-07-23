@@ -130,9 +130,9 @@ export function ScrollToTop({
 
   // Set position classes based on the position prop
   const positionClasses = {
-    "bottom-right": `bottom-${offset} right-${offset}`,
-    "bottom-left": `bottom-${offset} left-${offset}`,
-    "bottom-center": `bottom-${offset} left-1/2 -translate-x-1/2`,
+    "bottom-right": `fixed bottom-${offset} right-${offset}`,
+    "bottom-left": `fixed bottom-${offset} left-${offset}`,
+    "bottom-center": `fixed bottom-${offset} left-1/2 -translate-x-1/2`,
   }[position];
 
   // Animated button with progress indicator
@@ -144,7 +144,8 @@ export function ScrollToTop({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className={cn(`fixed ${positionClasses} z-50`, className)}
+          className={cn(positionClasses, "z-50", className)}
+          style={{ position: 'fixed', bottom: `${offset * 4}px` }}
           onMouseEnter={() => setHovering(true)}
           onMouseLeave={() => setHovering(false)}
         >

@@ -94,12 +94,12 @@ interface SearchFilterControlsProps {
 export function SearchFilterControls(props: SearchFilterControlsProps) {
   const {
     searchQuery = "",
-    setSearchQuery,
+  setSearchQuery,
     categoryOptions = [],
     selectedCategories = [],
-    setSelectedCategories,
-    sortOption,
-    onSortChange,
+  setSelectedCategories,
+  sortOption,
+  onSortChange,
     className,
     isLoading = false,
     onSaveSearch,
@@ -228,11 +228,11 @@ export function SearchFilterControls(props: SearchFilterControlsProps) {
             <div className="absolute inset-y-0 left-2 flex items-center pointer-events-none">
               <Search className="h-4 w-4 text-muted-foreground" />
             </div>
-            <Input
-              type="text"
+        <Input
+          type="text"
               placeholder="Search items... (Press '/' to focus)"
               value={localSearchQuery}
-              onChange={handleSearchChange}
+          onChange={handleSearchChange}
               className="w-full pl-8 pr-8"
               disabled={props.isLoading}
               ref={searchInputRef}
@@ -278,11 +278,11 @@ export function SearchFilterControls(props: SearchFilterControlsProps) {
               transition={{ duration: 0.2 }}
               className="flex flex-col gap-3 pt-1"
             >
-              <MultiSelect
+          <MultiSelect
                 options={props.categoryOptions}
                 value={props.selectedCategories}
                 onValueChange={props.setSelectedCategories}
-                placeholder="Filter by category"
+            placeholder="Filter by category"
                 className="w-full z-40"
                 disabled={props.isLoading}
               />
@@ -297,7 +297,7 @@ export function SearchFilterControls(props: SearchFilterControlsProps) {
                     value={filter.value}
                     onValueChange={filter.onChange}
                     placeholder={`Select ${filter.name.toLowerCase()}`}
-                    className="w-full"
+            className="w-full"
                     disabled={isLoading}
                   />
                 </div>
@@ -352,7 +352,7 @@ export function SearchFilterControls(props: SearchFilterControlsProps) {
                     </TooltipProvider>
                   )}
                 </div>
-              </div>
+        </div>
             </motion.div>
           </CollapsibleContent>
         </Collapsible>

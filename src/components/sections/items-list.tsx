@@ -9,7 +9,7 @@ import {
 import { isValid, parseISO } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import { Grid2X2, Grid3X3, Info, List, Loader2 } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 
@@ -17,6 +17,9 @@ import { SortOption } from "@/components/sort";
 import { useBookmarks } from "@/hooks/use-bookmark";
 import { useDebounce } from "@/hooks/use-debounce";
 import { Resource } from "@/hooks/use-readme";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { useReadStatus } from "@/hooks/use-read-status";
+import { useViewCount } from "@/hooks/use-view-count";
 import { ItemGrid } from "../item-grid";
 import { PaginationControls } from "../pagination-controls";
 import { SearchFilterControls } from "../search-filter-controls";
@@ -33,6 +36,7 @@ interface Category {
 interface ItemListProps {
   items: Resource[];
   categories: Category[];
+  initialLayoutType?: LayoutType;
 }
 
 // Define layout types
@@ -41,6 +45,7 @@ type LayoutType = "compact" | "grid" | "row";
 export default function ItemList({
   items: initialItems,
   categories,
+  initialLayoutType = "grid",
 }: ItemListProps) {
   const [filteredItems, setFilteredItems] = useState<Resource[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,11 +55,43 @@ export default function ItemList({
   const [sortOption, setSortOption] = useState<SortOption>("date-desc");
   const [isLoading, setIsLoading] = useState(true);
   const [isFiltering, setIsFiltering] = useState(false);
-  const [layoutType, setLayoutType] = useState<LayoutType>("grid");
+  const [layoutType, setLayoutType] = useLocalStorage<LayoutType>(
+    "layoutType",
+    initialLayoutType,
+  );
   const [error, setError] = useState<string | null>(null);
+  const { unreadItems: readItems, toggleReadStatus: handleMarkAsRead } =
+    useReadStatus();
+
+  const { viewCounts, incrementViewCount: handleView } = useViewCount();
+
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const { bookmarkedItems, toggleBookmark } = useBookmarks();
+
+  // Enhanced resource functionality already handled by our custom hooks
+
+  const handleShare = useCallback((id: number, title: string, url: string) => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title,
+          text: `Check out this resource: ${title}`,
+          url,
+        })
+        .catch(console.error);
+    } else {
+      navigator.clipboard
+        .writeText(url)
+        .then(() => {
+          alert("Link copied to clipboard!");
+        })
+        .catch((err) => {
+          console.error("Could not copy text: ", err);
+        });
+    }
+  }, []);
 
   const categoryOptions = useMemo(
     () =>
@@ -140,11 +177,21 @@ export default function ItemList({
   }, [filterAndSortItems]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    // Clear any existing timer
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = setTimeout(() => {
       setIsLoading(false);
       filterAndSortItems();
-    }, 100);
-    return () => clearTimeout(timer);
+    }, 300);
+
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
   }, []);
 
   const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
@@ -329,30 +376,18 @@ export default function ItemList({
           layout
         >
           {isLoading ? (
-            <div className={`grid gap-5 p-1 ${getGridClasses()}`}>
-              {[...Array(itemsPerPage)].map((_, index) => (
-                <Card
-                  key={index}
-                  className={`flex flex-col ${getCardHeightClass()} overflow-hidden border-border/40 bg-muted/5`}
-                >
-                  <CardHeader className="pb-3 space-y-3">
-                    <div className="flex justify-between items-start gap-4">
-                      <Skeleton className="h-5 w-2/3" />
-                      <Skeleton className="h-5 w-16 rounded-full" />
-                    </div>
-                  </CardHeader>
-                  <CardContent className="flex-grow space-y-2">
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-4/5" />
-                    <Skeleton className="h-4 w-2/3" />
-                  </CardContent>
-                  <CardFooter className="pt-3 space-x-2">
-                    <Skeleton className="h-9 w-10 rounded-md" />
-                    <Skeleton className="h-9 flex-grow rounded-md" />
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
+            <ItemGrid
+              items={[]}
+              bookmarkedItems={[]}
+              readItems={readItems}
+              viewCounts={viewCounts}
+              onBookmark={() => {}}
+              onMarkAsRead={handleMarkAsRead}
+              onShare={handleShare}
+              onView={handleView}
+              layoutType={layoutType}
+              isLoading={true}
+            />
           ) : error ? (
             <div className="flex flex-col items-center justify-center p-8 text-center">
               <div className="bg-red-50 dark:bg-red-950/30 p-4 rounded-lg border border-red-200 dark:border-red-800 flex items-center gap-3 mb-4">
@@ -399,8 +434,14 @@ export default function ItemList({
             <ItemGrid
               items={currentItems}
               bookmarkedItems={bookmarkedItems}
+              readItems={readItems}
+              viewCounts={viewCounts}
               onBookmark={toggleBookmark}
+              onMarkAsRead={handleMarkAsRead}
+              onShare={handleShare}
+              onView={handleView}
               layoutType={layoutType}
+              isLoading={isLoading}
             />
           )}
         </motion.div>

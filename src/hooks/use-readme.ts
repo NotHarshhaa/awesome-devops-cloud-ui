@@ -9,6 +9,9 @@ export interface Resource {
   category: string;
   date: string;
   formattedDate?: string;
+  imageUrl?: string;
+  viewCount?: number;
+  isRead?: boolean;
 }
 
 interface ParsedLine {

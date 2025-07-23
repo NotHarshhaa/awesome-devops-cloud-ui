@@ -48,7 +48,7 @@ const itemVariants = {
 
 const floatingAnimation = {
   y: [0, -10, 0],
-  transition: {
+    transition: {
     duration: 4,
     repeat: Infinity,
     ease: "easeInOut",
@@ -264,7 +264,7 @@ export default function Hero() {
                   delay: 1,
                 }}
               />
-            </div>
+          </div>
             <span className="text-xs sm:text-sm font-medium">Daily Updates</span>
           </motion.div>
         </motion.div>
@@ -316,8 +316,8 @@ export default function Hero() {
               whileHover={{ scale: 1.02 }}
             >
               <span className="bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent [text-shadow:0_4px_8px_rgba(0,0,0,0.1)]">
-                awesome-devops-cloud-ui
-              </span>
+              awesome-devops-cloud-ui
+            </span>
               <motion.span
                 className="absolute -inset-2 -z-10 bg-primary/5 blur-2xl rounded-full"
                 animate={{
@@ -359,7 +359,7 @@ export default function Hero() {
                 onClick={() => document.getElementById("explore")?.scrollIntoView({ behavior: "smooth" })}
               >
                 <span className="relative z-10 flex items-center gap-2">
-                  Explore Tools
+              Explore Tools
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </span>
               </Button>
@@ -376,15 +376,15 @@ export default function Hero() {
                 className="w-full sm:w-auto min-w-0 sm:min-w-[180px] h-11 sm:h-12 text-sm sm:text-base font-medium group relative overflow-hidden"
                 asChild
               >
-                <a
-                  href="https://github.com/NotHarshhaa/awesome-devops-cloud"
-                  target="_blank"
-                  rel="noopener noreferrer"
+            <a
+              href="https://github.com/NotHarshhaa/awesome-devops-cloud"
+              target="_blank"
+              rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2"
-                >
+            >
                   <Github className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
                   <span>View on GitHub</span>
-                </a>
+            </a>
               </Button>
             </motion.div>
           </div>
@@ -418,14 +418,14 @@ export default function Hero() {
               <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                href="https://notharshhaa.site/"
-                target="_blank"
-                rel="noopener noreferrer"
+              href="https://notharshhaa.site/"
+              target="_blank"
+              rel="noopener noreferrer"
                 className="text-xs sm:text-sm font-medium bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80 hover:from-primary hover:to-primary/80 transition-colors duration-300 whitespace-nowrap"
-              >
+            >
                 H A R S H H A A
               </motion.a>
-            </div>
+          </div>
           </motion.div>
         </motion.div>
       </motion.div>

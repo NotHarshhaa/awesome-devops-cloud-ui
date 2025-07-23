@@ -72,8 +72,8 @@ export function Footer() {
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {/* Logo and Description */}
             <div className="flex flex-col gap-3 md:gap-4 col-span-1 sm:col-span-2 lg:col-span-1">
-              <Link
-                href="/"
+              <Link 
+                href="/" 
                 className="group flex items-center gap-2 transition-all duration-300 hover:opacity-90"
               >
                 <motion.div
@@ -245,7 +245,7 @@ export function Footer() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+            </div>
 
               {/* Desktop Links */}
               <motion.div
@@ -254,18 +254,18 @@ export function Footer() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
-                <button
-                  onClick={() => setShowPrivacy(true)}
+              <button 
+                onClick={() => setShowPrivacy(true)}
                   className="text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 hover:underline underline-offset-4"
-                >
+              >
                   Privacy Policy
-                </button>
-                <button
-                  onClick={() => setShowTerms(true)}
+              </button>
+              <button 
+                onClick={() => setShowTerms(true)}
                   className="text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 hover:underline underline-offset-4"
-                >
+              >
                   Terms of Service
-                </button>
+              </button>
               </motion.div>
             </div>
           </div>
@@ -284,7 +284,7 @@ export function Footer() {
             Privacy Policy explains how we collect, use, and protect your
             personal information.
           </p>
-
+          
           <h3 className="text-lg font-semibold">Information We Collect</h3>
           <p>
             We collect minimal information necessary to provide you with the
