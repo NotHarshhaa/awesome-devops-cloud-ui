@@ -185,15 +185,15 @@ export default function Hero() {
         {/* Enhanced Stats Banner */}
         <motion.div
           variants={itemVariants}
-          className="mb-12 flex flex-wrap justify-center items-center gap-4 sm:gap-6 rounded-full border border-primary/20 bg-background/60 px-5 py-3 shadow-lg backdrop-blur-xl transition-all duration-300 hover:border-primary/30 hover:shadow-primary/10"
+          className="mb-8 sm:mb-12 flex flex-wrap justify-center items-center gap-2 sm:gap-6 rounded-full border border-primary/20 bg-background/60 px-3 sm:px-5 py-2 sm:py-3 shadow-lg backdrop-blur-xl transition-all duration-300 hover:border-primary/30 hover:shadow-primary/10"
         >
           <motion.div
-            className="flex items-center gap-2 group"
+            className="flex items-center gap-1.5 sm:gap-2 group"
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
             <div className="relative">
-              <Star className="h-4 w-4 text-yellow-500" aria-hidden="true" />
+              <Star className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-yellow-500" aria-hidden="true" />
               <motion.div
                 className="absolute inset-0 rounded-full bg-yellow-500/20"
                 animate={{
@@ -207,7 +207,7 @@ export default function Hero() {
                 }}
               />
             </div>
-            <span className="text-sm font-medium">1.2k Stars on GitHub</span>
+            <span className="text-xs sm:text-sm font-medium">1.2k Stars</span>
           </motion.div>
 
           <div
@@ -216,12 +216,12 @@ export default function Hero() {
           />
 
           <motion.div
-            className="flex items-center gap-2 group"
+            className="flex items-center gap-1.5 sm:gap-2 group"
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
             <div className="relative">
-              <Sparkles className="h-4 w-4 text-primary" aria-hidden="true" />
+              <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" aria-hidden="true" />
               <motion.div
                 className="absolute inset-0 rounded-full bg-primary/20"
                 animate={{
@@ -236,9 +236,7 @@ export default function Hero() {
                 }}
               />
             </div>
-            <span className="text-sm font-medium text-muted-foreground">
-              100+ DevOps Tools
-            </span>
+            <span className="text-xs sm:text-sm font-medium text-muted-foreground">100+ Tools</span>
           </motion.div>
 
           <div
@@ -247,12 +245,12 @@ export default function Hero() {
           />
 
           <motion.div
-            className="flex items-center gap-2 group"
+            className="flex items-center gap-1.5 sm:gap-2 group"
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
             <div className="relative">
-              <GitBranch className="h-4 w-4 text-blue-500" aria-hidden="true" />
+              <GitBranch className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-500" aria-hidden="true" />
               <motion.div
                 className="absolute inset-0 rounded-full bg-blue-500/20"
                 animate={{
@@ -267,14 +265,14 @@ export default function Hero() {
                 }}
               />
             </div>
-            <span className="text-sm font-medium">Daily Updates</span>
+            <span className="text-xs sm:text-sm font-medium">Daily Updates</span>
           </motion.div>
         </motion.div>
 
         {/* Enhanced Logo */}
         <motion.div
           variants={itemVariants}
-          className="relative mb-8 group"
+          className="relative mb-6 sm:mb-8 group"
           animate={floatingAnimation}
           onHoverStart={() => setIsHovering(true)}
           onHoverEnd={() => setIsHovering(false)}
@@ -294,7 +292,7 @@ export default function Hero() {
           <img
             src="/logo.svg"
             alt="awesome-devops-cloud-ui logo"
-            className="relative h-28 w-auto transition-all duration-300 md:h-32 filter drop-shadow-lg group-hover:scale-105 group-hover:brightness-110 group-hover:drop-shadow-xl"
+            className="relative h-20 w-auto sm:h-28 md:h-32 filter drop-shadow-lg group-hover:scale-105 group-hover:brightness-110 group-hover:drop-shadow-xl transition-all duration-300"
           />
 
           {/* Orbiting elements around logo */}
@@ -311,8 +309,8 @@ export default function Hero() {
         </motion.div>
 
         {/* Enhanced Title and Description */}
-        <motion.div variants={itemVariants} className="text-center">
-          <h1 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
+        <motion.div variants={itemVariants} className="text-center px-4 sm:px-6">
+          <h1 className="mb-4 sm:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
             <motion.span
               className="relative inline-block"
               whileHover={{ scale: 1.02 }}
@@ -335,7 +333,7 @@ export default function Hero() {
             </motion.span>
           </h1>
           <motion.p
-            className="mx-auto max-w-3xl text-base text-muted-foreground/90 md:text-lg leading-relaxed"
+            className="mx-auto max-w-3xl text-sm sm:text-base md:text-lg text-muted-foreground/90 leading-relaxed"
             variants={itemVariants}
           >
             A curated collection of DevOps & Cloud tools, beautifully organized
@@ -347,47 +345,35 @@ export default function Hero() {
         {/* Enhanced Action Buttons */}
         <motion.div
           variants={itemVariants}
-          className="mt-12 flex flex-col items-center gap-8"
+          className="mt-8 sm:mt-12 flex flex-col items-center gap-6 sm:gap-8 w-full px-4 sm:px-0"
         >
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="relative"
+              className="relative w-full sm:w-auto"
             >
-              <motion.div
-                className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-primary/40 to-primary/20 rounded-lg blur-md opacity-75"
-                animate={{
-                  opacity: [0.5, 0.8, 0.5],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
               <Button
                 size="lg"
-                className="relative min-w-[180px] h-12 text-base font-medium overflow-hidden group"
-                onClick={() =>
-                  document
-                    .getElementById("explore")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
+                className="w-full sm:w-auto min-w-0 sm:min-w-[180px] h-11 sm:h-12 text-sm sm:text-base font-medium relative overflow-hidden group"
+                onClick={() => document.getElementById("explore")?.scrollIntoView({ behavior: "smooth" })}
               >
                 <span className="relative z-10 flex items-center gap-2">
                   Explore Tools
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary-foreground/10 to-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
               </Button>
             </motion.div>
 
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <motion.div 
+              whileHover={{ scale: 1.05 }} 
+              whileTap={{ scale: 0.95 }}
+              className="w-full sm:w-auto"
+            >
               <Button
                 variant="outline"
                 size="lg"
-                className="min-w-[180px] h-12 text-base font-medium group relative overflow-hidden"
+                className="w-full sm:w-auto min-w-0 sm:min-w-[180px] h-11 sm:h-12 text-sm sm:text-base font-medium group relative overflow-hidden"
                 asChild
               >
                 <a
@@ -398,56 +384,48 @@ export default function Hero() {
                 >
                   <Github className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
                   <span>View on GitHub</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-background/0 via-primary/5 to-background/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                 </a>
               </Button>
             </motion.div>
           </div>
 
           {/* Documentation Button */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="mt-4"
-          >
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               variant="ghost"
               size="sm"
-              className="group relative overflow-hidden"
+              className="text-xs sm:text-sm group relative overflow-hidden"
               asChild
             >
-              <Link
-                href="/docs"
-                className="inline-flex items-center justify-center gap-2 text-sm"
-              >
-                <Code className="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+              <Link href="/docs" className="inline-flex items-center justify-center gap-2">
+                <Code className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:rotate-12" />
                 <span>Read Documentation</span>
-                <ExternalLink className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
+                <ExternalLink className="h-3 w-3 sm:h-3.5 sm:w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </Button>
           </motion.div>
 
           {/* Enhanced Creator Link */}
           <motion.div
-            className="flex items-center gap-2 text-sm text-muted-foreground mt-6"
-            whileHover={{ scale: 1.05 }}
+            className="mt-8 mb-4 flex flex-col items-center text-center max-w-full px-4"
+            variants={itemVariants}
           >
-            <span>Created with ❤️ by</span>
-            <a
-              href="https://notharshhaa.site/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative font-medium text-foreground/90 hover:text-foreground transition-colors"
-            >
-              <span className="inline-flex items-center">
-                H A R S H H A A
-                <motion.span
-                  className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-gradient-to-r from-primary/60 via-primary to-primary/60"
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 w-full">
+              <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
+                Created with{" "}
+                <span className="inline-block animate-pulse">❤️</span> by
               </span>
-            </a>
+              <motion.a
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                href="https://notharshhaa.site/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs sm:text-sm font-medium bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80 hover:from-primary hover:to-primary/80 transition-colors duration-300 whitespace-nowrap"
+              >
+                H A R S H H A A
+              </motion.a>
+            </div>
           </motion.div>
         </motion.div>
       </motion.div>
