@@ -65,7 +65,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="border-t bg-gradient-to-b from-background to-background/95 backdrop-blur-xl">
+    <footer className="border-t bg-gradient-to-b from-background/95 to-background/80 backdrop-blur-xl border-border/20">
       <div className="container mx-auto px-4 py-6 md:py-12">
         <div className="flex flex-col gap-8 md:gap-10">
           {/* Main Footer Content */}
@@ -149,7 +149,7 @@ export function Footer() {
               </h3>
               <div className="flex flex-col gap-2 md:gap-3">
                 <motion.div
-                  className="flex items-center gap-2 rounded-lg border bg-background/50 backdrop-blur-sm px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm"
+                  className="flex items-center gap-2 rounded-lg border border-primary/20 bg-gradient-to-r from-background/60 to-background/40 backdrop-blur-sm px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm shadow-lg hover:shadow-primary/10 transition-all duration-300"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -160,7 +160,7 @@ export function Footer() {
                   href="https://github.com/NotHarshhaa/awesome-devops-cloud"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 rounded-lg border bg-background/50 backdrop-blur-sm px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
+                  className="flex items-center gap-2 rounded-lg border border-primary/20 bg-gradient-to-r from-background/60 to-background/40 backdrop-blur-sm px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-medium text-muted-foreground hover:text-foreground hover:shadow-primary/10 transition-all duration-300"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >

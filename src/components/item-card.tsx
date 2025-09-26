@@ -59,10 +59,16 @@ const standardAnimations = {
   transition: { type: "spring", stiffness: 300, damping: 30 },
 };
 
-// Hover animations for interactive elements
+// Enhanced hover animations for interactive elements
 const hoverAnimation = {
   scale: 1.02,
-  transition: { duration: 0.2 },
+  y: -2,
+  transition: { 
+    type: "spring", 
+    stiffness: 300, 
+    damping: 20,
+    duration: 0.3 
+  },
 };
 
 const ItemCard: React.FC<ItemCardProps> = React.memo(
@@ -134,7 +140,7 @@ const ItemCard: React.FC<ItemCardProps> = React.memo(
       switch (layoutType) {
         case "compact":
           return {
-            card: "min-h-[220px] w-full group border-neutral-200 dark:border-neutral-800 transition-all duration-200 hover:border-neutral-300 dark:hover:border-neutral-700 focus-within:ring-2 focus-within:ring-primary/40",
+            card: "min-h-[240px] w-full group border-neutral-200/60 dark:border-neutral-800/60 transition-all duration-300 hover:border-primary/30 dark:hover:border-primary/30 focus-within:ring-2 focus-within:ring-primary/40 hover:shadow-lg hover:shadow-primary/5 dark:hover:shadow-primary/10 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm",
             container: "gap-1",
             title:
               "text-sm font-bold text-foreground transition-colors duration-200",
@@ -154,7 +160,7 @@ const ItemCard: React.FC<ItemCardProps> = React.memo(
           };
         case "row":
           return {
-            card: "min-h-[140px] w-full group border-neutral-200 dark:border-neutral-800 transition-all duration-200 hover:border-neutral-300 dark:hover:border-neutral-700 focus-within:ring-2 focus-within:ring-primary/40",
+            card: "min-h-[160px] w-full group border-neutral-200/60 dark:border-neutral-800/60 transition-all duration-300 hover:border-primary/30 dark:hover:border-primary/30 focus-within:ring-2 focus-within:ring-primary/40 hover:shadow-lg hover:shadow-primary/5 dark:hover:shadow-primary/10 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm",
             container: "md:flex-row md:gap-4 gap-2",
             title:
               "text-base md:text-lg font-bold text-foreground transition-colors duration-200",
@@ -175,7 +181,7 @@ const ItemCard: React.FC<ItemCardProps> = React.memo(
         case "grid":
         default:
           return {
-            card: "min-h-[280px] w-full group border-neutral-200 dark:border-neutral-800 transition-all duration-200 hover:border-neutral-300 dark:hover:border-neutral-700 focus-within:ring-2 focus-within:ring-primary/40",
+            card: "min-h-[300px] w-full group border-neutral-200/60 dark:border-neutral-800/60 transition-all duration-300 hover:border-primary/30 dark:hover:border-primary/30 focus-within:ring-2 focus-within:ring-primary/40 hover:shadow-xl hover:shadow-primary/5 dark:hover:shadow-primary/10 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm hover:scale-[1.02]",
             container: "gap-3",
             title:
               "text-lg font-bold text-foreground transition-colors duration-200",
@@ -196,25 +202,33 @@ const ItemCard: React.FC<ItemCardProps> = React.memo(
       }
     }, [layoutType]);
 
-    // Skeleton loading state
+    // Enhanced skeleton loading state
     if (isLoading) {
       return (
         <motion.div layout {...standardAnimations} className={styles.container}>
           <Card className={cn(`overflow-hidden relative`, styles.card, className)}>
             <div className="animate-pulse flex flex-col h-full">
-              <div className={cn(styles.headerPadding, "space-y-2")}>
-                <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
+              {/* Header skeleton with shimmer effect */}
+              <div className={cn(styles.headerPadding, "space-y-2 relative overflow-hidden")}>
+                <div className="h-6 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 rounded w-3/4 animate-pulse"></div>
+                <div className="h-4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 rounded w-1/4 animate-pulse"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent dark:via-white/10 animate-shimmer"></div>
               </div>
-              <div className={cn(styles.contentPadding, "space-y-2")}>
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+              
+              {/* Content skeleton */}
+              <div className={cn(styles.contentPadding, "space-y-2 relative overflow-hidden")}>
+                <div className="h-4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 rounded animate-pulse"></div>
+                <div className="h-4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 rounded w-5/6 animate-pulse"></div>
+                <div className="h-4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 rounded w-3/4 animate-pulse"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent dark:via-white/10 animate-shimmer" style={{ animationDelay: '0.5s' }}></div>
               </div>
-              <div className={cn(styles.footerPadding, "flex gap-2 mt-auto")}>
-                <div className="h-9 w-9 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                <div className="h-9 w-9 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                <div className="h-9 flex-grow bg-gray-200 dark:bg-gray-700 rounded"></div>
+              
+              {/* Footer skeleton */}
+              <div className={cn(styles.footerPadding, "flex gap-2 mt-auto relative overflow-hidden")}>
+                <div className="h-9 w-9 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 rounded animate-pulse"></div>
+                <div className="h-9 w-9 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 rounded animate-pulse"></div>
+                <div className="h-9 flex-grow bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 rounded animate-pulse"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent dark:via-white/10 animate-shimmer" style={{ animationDelay: '1s' }}></div>
               </div>
             </div>
           </Card>
@@ -389,6 +403,7 @@ const ItemCard: React.FC<ItemCardProps> = React.memo(
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.9, opacity: 0 }}
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     key={`bookmark-${isBookmarked}-${layoutType}`}
                     className="flex-shrink-0"
@@ -409,11 +424,11 @@ const ItemCard: React.FC<ItemCardProps> = React.memo(
                                 : "Add to bookmarks"
                             }
                             className={cn(
-                              "transition-all duration-300 flex-shrink-0",
+                              "transition-all duration-300 flex-shrink-0 hover:scale-110",
                               styles.bookmarkBtn,
                               isBookmarked
-                                ? "bg-yellow-500 hover:bg-yellow-600 text-white border-yellow-600"
-                                : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:border-gray-400 dark:hover:border-gray-600",
+                                ? "bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white border-yellow-600 shadow-lg hover:shadow-yellow-500/25"
+                                : "text-gray-400 hover:text-primary dark:hover:text-primary hover:border-primary/50 dark:hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/5",
                             )}
                           >
                             <Bookmark
@@ -437,6 +452,7 @@ const ItemCard: React.FC<ItemCardProps> = React.memo(
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.9, opacity: 0 }}
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     key={`collection-${layoutType}`}
                     className="flex-shrink-0"
@@ -453,7 +469,7 @@ const ItemCard: React.FC<ItemCardProps> = React.memo(
                             }}
                             aria-label="Add to collection"
                             className={cn(
-                              "transition-all duration-300 flex-shrink-0",
+                              "transition-all duration-300 flex-shrink-0 hover:scale-110 hover:bg-primary/10 dark:hover:bg-primary/10 hover:border-primary/50 dark:hover:border-primary/50",
                               styles.bookmarkBtn,
                             )}
                           >
@@ -470,6 +486,7 @@ const ItemCard: React.FC<ItemCardProps> = React.memo(
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.9, opacity: 0 }}
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="flex-shrink-0"
                   >
@@ -482,7 +499,7 @@ const ItemCard: React.FC<ItemCardProps> = React.memo(
                             onClick={handleShare}
                             aria-label="Share this resource"
                             className={cn(
-                              "transition-all duration-300 flex-shrink-0",
+                              "transition-all duration-300 flex-shrink-0 hover:scale-110 hover:bg-primary/10 dark:hover:bg-primary/10 hover:border-primary/50 dark:hover:border-primary/50",
                               styles.bookmarkBtn,
                             )}
                           >
@@ -540,9 +557,9 @@ const ItemCard: React.FC<ItemCardProps> = React.memo(
                 <Button
                   asChild
                   className={cn(
-                    "group overflow-hidden relative",
+                    "group overflow-hidden relative hover:scale-105",
                     styles.button,
-                    "transition-all duration-300",
+                    "transition-all duration-300 bg-gradient-to-r from-primary/10 to-blue-500/10 hover:from-primary/20 hover:to-blue-500/20 border-primary/20 hover:border-primary/40",
                     layoutType === "row" 
                       ? "md:w-auto md:min-w-[100px] md:h-9 md:px-3" 
                       : "flex-1"

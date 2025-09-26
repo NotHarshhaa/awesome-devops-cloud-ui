@@ -31,7 +31,7 @@ export function Header() {
         damping: 20,
         duration: 0.6,
       }}
-      className="sticky top-0 z-50 w-full border-b bg-gradient-to-b from-background/60 to-background/40 backdrop-blur-xl shadow-sm"
+      className="sticky top-0 z-50 w-full border-b bg-gradient-to-b from-background/80 to-background/60 backdrop-blur-xl shadow-sm border-border/20"
     >
       <div className="container mx-auto px-4">
         <div className="flex h-14 md:h-16 items-center justify-between">
@@ -61,7 +61,7 @@ export function Header() {
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               <Link
                 href="/docs"
-                className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-300 hover:text-foreground hover:bg-muted/50"
+                className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-300 hover:text-foreground hover:bg-primary/10 hover:border-primary/20 border border-transparent"
               >
                 <BookOpen className="h-5 w-5" />
                 <span>Docs</span>
@@ -70,7 +70,7 @@ export function Header() {
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               <Link
                 href="/collections"
-                className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-300 hover:text-foreground hover:bg-muted/50"
+                className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-300 hover:text-foreground hover:bg-primary/10 hover:border-primary/20 border border-transparent"
               >
                 <FolderOpen className="h-5 w-5" />
                 <span>Collections</span>
@@ -79,7 +79,7 @@ export function Header() {
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               <Link
                 href="/about"
-                className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-300 hover:text-foreground hover:bg-muted/50"
+                className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-300 hover:text-foreground hover:bg-primary/10 hover:border-primary/20 border border-transparent"
               >
                 <Users className="h-5 w-5" />
                 <span>About</span>
@@ -89,7 +89,7 @@ export function Header() {
               href="https://github.com/NotHarshhaa/awesome-devops-cloud"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-300 hover:text-foreground hover:bg-muted/50"
+              className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-300 hover:text-foreground hover:bg-primary/10 hover:border-primary/20 border border-transparent"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -105,7 +105,7 @@ export function Header() {
             <ModeToggle />
             <button
               onClick={toggleMobileMenu}
-              className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+              className="p-3 rounded-full text-muted-foreground hover:text-foreground hover:bg-primary/10 active:bg-primary/20 transition-all duration-200 touch-manipulation"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             >
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -127,7 +127,7 @@ export function Header() {
             <div className="container px-4 py-3 flex flex-col space-y-2">
               <Link
                 href="/docs"
-                className="flex items-center gap-2 p-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                className="flex items-center gap-2 p-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/10 active:bg-primary/20 transition-all duration-200 touch-manipulation"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <BookOpen className="h-4 w-4" />
@@ -135,7 +135,7 @@ export function Header() {
               </Link>
               <Link
                 href="/collections"
-                className="flex items-center gap-2 p-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                className="flex items-center gap-2 p-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/10 active:bg-primary/20 transition-all duration-200 touch-manipulation"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <FolderOpen className="h-4 w-4" />
@@ -143,7 +143,7 @@ export function Header() {
               </Link>
               <Link
                 href="/about"
-                className="flex items-center gap-2 p-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                className="flex items-center gap-2 p-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/10 active:bg-primary/20 transition-all duration-200 touch-manipulation"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Users className="h-4 w-4" />
@@ -153,7 +153,7 @@ export function Header() {
                 href="https://github.com/NotHarshhaa/awesome-devops-cloud"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 p-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                className="flex items-center gap-2 p-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/10 active:bg-primary/20 transition-all duration-200 touch-manipulation"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Github className="h-4 w-4" />

@@ -376,18 +376,32 @@ export default function ItemList({
           layout
         >
           {isLoading ? (
-            <ItemGrid
-              items={[]}
-              bookmarkedItems={[]}
-              readItems={readItems}
-              viewCounts={viewCounts}
-              onBookmark={() => {}}
-              onMarkAsRead={handleMarkAsRead}
-              onShare={handleShare}
-              onView={handleView}
-              layoutType={layoutType}
-              isLoading={true}
-            />
+            <div className="space-y-6">
+              <div className="flex items-center justify-center py-12">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="relative">
+                    <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                    <div className="absolute inset-0 w-12 h-12 border-4 border-transparent border-t-primary/40 rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }}></div>
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-lg font-semibold text-foreground mb-2">Loading Resources</h3>
+                    <p className="text-sm text-muted-foreground">Fetching the latest DevOps & Cloud tools...</p>
+                  </div>
+                </div>
+              </div>
+              <ItemGrid
+                items={[]}
+                bookmarkedItems={[]}
+                readItems={readItems}
+                viewCounts={viewCounts}
+                onBookmark={() => {}}
+                onMarkAsRead={handleMarkAsRead}
+                onShare={handleShare}
+                onView={handleView}
+                layoutType={layoutType}
+                isLoading={true}
+              />
+            </div>
           ) : error ? (
             <div className="flex flex-col items-center justify-center p-8 text-center">
               <div className="bg-red-50 dark:bg-red-950/30 p-4 rounded-lg border border-red-200 dark:border-red-800 flex items-center gap-3 mb-4">

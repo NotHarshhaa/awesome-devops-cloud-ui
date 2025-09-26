@@ -177,7 +177,7 @@ export default function Hero() {
 
       <motion.div
         ref={containerRef}
-        className="mx-auto flex h-full min-h-[100vh] max-w-6xl flex-col items-center justify-center px-6 py-12"
+        className="mx-auto flex h-full min-h-[100vh] max-w-6xl flex-col items-center justify-center px-4 sm:px-6 py-8 sm:py-12"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -310,36 +310,52 @@ export default function Hero() {
 
         {/* Enhanced Title and Description */}
         <motion.div variants={itemVariants} className="text-center px-4 sm:px-6">
-          <h1 className="mb-4 sm:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-            <motion.span
-              className="relative inline-block"
-              whileHover={{ scale: 1.02 }}
-            >
-              <span className="bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent [text-shadow:0_4px_8px_rgba(0,0,0,0.1)]">
-              awesome-devops-cloud-ui
-            </span>
-              <motion.span
-                className="absolute -inset-2 -z-10 bg-primary/5 blur-2xl rounded-full"
-                animate={{
-                  opacity: [0.5, 0.8, 0.5],
-                  scale: [1, 1.05, 1],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-            </motion.span>
-          </h1>
-          <motion.p
-            className="mx-auto max-w-3xl text-sm sm:text-base md:text-lg text-muted-foreground/90 leading-relaxed"
-            variants={itemVariants}
+          <motion.div
+            className="relative mb-6 sm:mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
           >
-            A curated collection of DevOps & Cloud tools, beautifully organized
-            and easily accessible. Discover the perfect tools to streamline your
-            development workflow and boost your productivity.
-          </motion.p>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
+              <motion.span
+                className="relative inline-block"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              >
+                <span className="bg-gradient-to-r from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent [text-shadow:0_4px_8px_rgba(0,0,0,0.1)]">
+                  awesome-devops-cloud-ui
+                </span>
+                <motion.div
+                  className="absolute -inset-4 -z-10 bg-gradient-to-r from-primary/10 via-blue-500/10 to-purple-500/10 blur-3xl rounded-full"
+                  animate={{
+                    opacity: [0.3, 0.6, 0.3],
+                    scale: [1, 1.1, 1],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                />
+              </motion.span>
+            </h1>
+            
+            {/* Enhanced subtitle with better typography */}
+            <motion.div
+              className="mt-4 sm:mt-6"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+            >
+              <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground/80 font-medium mb-3">
+                Curated DevOps & Cloud Tools
+              </p>
+              <p className="mx-auto max-w-4xl text-sm sm:text-base md:text-lg text-muted-foreground/70 leading-relaxed">
+                Discover the perfect tools to streamline your development workflow and boost your productivity. 
+                Beautifully organized and easily accessible.
+              </p>
+            </motion.div>
+          </motion.div>
         </motion.div>
 
         {/* Enhanced Action Buttons */}
@@ -347,60 +363,70 @@ export default function Hero() {
           variants={itemVariants}
           className="mt-8 sm:mt-12 flex flex-col items-center gap-6 sm:gap-8 w-full px-4 sm:px-0"
         >
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 w-full sm:w-auto">
             <motion.div
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               className="relative w-full sm:w-auto"
             >
               <Button
                 size="lg"
-                className="w-full sm:w-auto min-w-0 sm:min-w-[180px] h-11 sm:h-12 text-sm sm:text-base font-medium relative overflow-hidden group"
+                className="w-full sm:w-auto min-w-0 sm:min-w-[200px] h-12 sm:h-14 text-sm sm:text-base font-semibold relative overflow-hidden group bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-lg hover:shadow-xl transition-all duration-300"
                 onClick={() => document.getElementById("explore")?.scrollIntoView({ behavior: "smooth" })}
               >
                 <span className="relative z-10 flex items-center gap-2">
-              Explore Tools
+                  Explore Tools
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </span>
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: "100%" }}
+                  transition={{ duration: 0.6 }}
+                />
               </Button>
             </motion.div>
 
             <motion.div 
-              whileHover={{ scale: 1.05 }} 
+              whileHover={{ scale: 1.05, y: -2 }} 
               whileTap={{ scale: 0.95 }}
               className="w-full sm:w-auto"
             >
               <Button
                 variant="outline"
                 size="lg"
-                className="w-full sm:w-auto min-w-0 sm:min-w-[180px] h-11 sm:h-12 text-sm sm:text-base font-medium group relative overflow-hidden"
+                className="w-full sm:w-auto min-w-0 sm:min-w-[200px] h-12 sm:h-14 text-sm sm:text-base font-semibold group relative overflow-hidden border-2 hover:border-primary/50 bg-background/50 backdrop-blur-sm hover:bg-primary/5 transition-all duration-300"
                 asChild
               >
-            <a
-              href="https://github.com/NotHarshhaa/awesome-devops-cloud"
-              target="_blank"
-              rel="noopener noreferrer"
+                <a
+                  href="https://github.com/NotHarshhaa/awesome-devops-cloud"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2"
-            >
+                >
                   <Github className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
                   <span>View on GitHub</span>
-            </a>
+                </a>
               </Button>
             </motion.div>
           </div>
 
           {/* Documentation Button */}
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <motion.div 
+            whileHover={{ scale: 1.05, y: -1 }} 
+            whileTap={{ scale: 0.95 }}
+            className="mt-4"
+          >
             <Button
               variant="ghost"
               size="sm"
-              className="text-xs sm:text-sm group relative overflow-hidden"
+              className="text-sm group relative overflow-hidden hover:bg-primary/10 transition-all duration-300 rounded-full px-6 py-2"
               asChild
             >
               <Link href="/docs" className="inline-flex items-center justify-center gap-2">
-                <Code className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:rotate-12" />
+                <Code className="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
                 <span>Read Documentation</span>
-                <ExternalLink className="h-3 w-3 sm:h-3.5 sm:w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                <ExternalLink className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </Button>
           </motion.div>
@@ -410,22 +436,32 @@ export default function Hero() {
             className="mt-8 mb-4 flex flex-col items-center text-center max-w-full px-4"
             variants={itemVariants}
           >
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 w-full">
-              <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
+            <motion.div 
+              className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 w-full p-4 rounded-2xl bg-gradient-to-r from-background/50 to-background/30 backdrop-blur-sm border border-border/20"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              <span className="text-sm text-muted-foreground/80 whitespace-nowrap">
                 Created with{" "}
-                <span className="inline-block animate-pulse">❤️</span> by
+                <motion.span 
+                  className="inline-block"
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                >
+                  ❤️
+                </motion.span> by
               </span>
               <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-              href="https://notharshhaa.site/"
-              target="_blank"
-              rel="noopener noreferrer"
-                className="text-xs sm:text-sm font-medium bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80 hover:from-primary hover:to-primary/80 transition-colors duration-300 whitespace-nowrap"
-            >
+                href="https://notharshhaa.site/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-semibold bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-600 to-purple-600 hover:from-primary/80 hover:via-blue-500 hover:to-purple-500 transition-all duration-300 whitespace-nowrap"
+              >
                 H A R S H H A A
               </motion.a>
-          </div>
+            </motion.div>
           </motion.div>
         </motion.div>
       </motion.div>
