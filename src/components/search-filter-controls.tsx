@@ -223,7 +223,7 @@ export function SearchFilterControls(props: SearchFilterControlsProps) {
     >
       {/* Mobile Layout */}
       <div className="flex w-full flex-col gap-4 sm:hidden">
-        <div className="relative flex items-center gap-2 z-30">
+        <div className="relative flex items-center gap-2 z-20">
           <div className="relative flex-1">
             <div className="absolute inset-y-0 left-2 flex items-center pointer-events-none">
               <Search className="h-4 w-4 text-muted-foreground" />
@@ -283,7 +283,7 @@ export function SearchFilterControls(props: SearchFilterControlsProps) {
                 value={props.selectedCategories}
                 onValueChange={props.setSelectedCategories}
             placeholder="Filter by category"
-                className="w-full z-40"
+                className="w-full z-10"
                 disabled={props.isLoading}
               />
 
@@ -432,7 +432,7 @@ export function SearchFilterControls(props: SearchFilterControlsProps) {
             value={props.selectedCategories}
             onValueChange={props.setSelectedCategories}
             placeholder="Filter by category"
-            className="w-[220px] z-40"
+            className="w-[220px] z-10"
             disabled={props.isLoading}
           />
 
@@ -465,7 +465,7 @@ export function SearchFilterControls(props: SearchFilterControlsProps) {
               </Button>
             </PopoverTrigger>
             <PopoverContent
-              className="w-[320px] p-0 z-50"
+              className="w-[320px] p-0 z-30"
               align="start"
               sideOffset={5}
             >
@@ -529,7 +529,7 @@ export function SearchFilterControls(props: SearchFilterControlsProps) {
                             value={filter?.value || []}
                             onValueChange={filter?.onChange || (() => {})}
                             placeholder={`Select ${(filter?.name || "").toLowerCase()}`}
-                            className="w-full z-40"
+                            className="w-full z-10"
                             disabled={props.isLoading}
                           />
                         </div>
@@ -686,7 +686,7 @@ export function SearchFilterControls(props: SearchFilterControlsProps) {
       {props.onSaveSearch && (
         <Popover open={isSaveDialogOpen} onOpenChange={setIsSaveDialogOpen}>
           <PopoverContent
-            className="w-80 z-50"
+            className="w-80 z-30"
             align={isSmallScreen ? "center" : "end"}
             sideOffset={5}
           >

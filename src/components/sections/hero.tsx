@@ -93,17 +93,20 @@ export default function Hero() {
   }));
 
   return (
-    <section className="relative isolate min-h-[100vh] w-full overflow-hidden bg-dot-pattern">
+    <section className="relative isolate min-h-[100vh] w-full overflow-hidden" id="hero">
       {/* Enhanced Background Elements */}
       <motion.div
-        className="absolute inset-0 -z-10"
+        className="absolute inset-0 -z-10 w-full h-full"
         style={{ y, opacity, scale }}
       >
-        {/* Main gradient background */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(var(--primary-rgb),0.15),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(var(--primary-rgb),0.1),transparent_60%)]" />
+        {/* Main gradient background - covers full area */}
+        <div className="absolute inset-0 w-full h-full bg-[radial-gradient(ellipse_at_top,rgba(var(--primary-rgb),0.15),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(var(--primary-rgb),0.1),transparent_60%)]" />
 
-        {/* Animated dot pattern with mask */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800d_1px,transparent_1px),linear-gradient(to_bottom,#8080800d_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_800px_at_center,black,transparent)]" />
+        {/* Base background color */}
+        <div className="absolute inset-0 w-full h-full bg-background" />
+
+        {/* Animated dot pattern with mask - covers full area */}
+        <div className="absolute inset-0 w-full h-full bg-[linear-gradient(to_right,#8080800d_1px,transparent_1px),linear-gradient(to_bottom,#8080800d_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_800px_at_center,black,transparent)]" />
 
         {/* Animated particles */}
         <div className="absolute inset-0 overflow-hidden">
@@ -173,6 +176,10 @@ export default function Hero() {
             },
           }}
         />
+        
+        {/* Additional background coverage elements */}
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-transparent via-background/5 to-background/10" />
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-background/5 to-transparent" />
       </motion.div>
 
       <motion.div

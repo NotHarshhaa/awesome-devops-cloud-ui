@@ -97,6 +97,7 @@ const ItemCard: React.FC<ItemCardProps> = React.memo(
     // Handle keyboard navigation
     const handleKeyDown = (e: React.KeyboardEvent) => {
       if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
         window.open(url, "_blank", "noopener,noreferrer");
         if (onView && !hasViewed) {
           onView(id);
@@ -249,7 +250,7 @@ const ItemCard: React.FC<ItemCardProps> = React.memo(
       >
         <Card
           className={cn(
-            `overflow-hidden relative flex flex-col h-full`,
+            `overflow-hidden relative flex flex-col h-full focus-within:ring-2 focus-within:ring-primary/20`,
             styles.card,
             !isRead && "border-l-4 border-l-primary",
             className

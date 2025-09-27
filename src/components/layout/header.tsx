@@ -122,7 +122,9 @@ export function Header() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden border-t bg-background/95 backdrop-blur-sm"
+            className="md:hidden border-t bg-background/95 backdrop-blur-sm z-40"
+            role="navigation"
+            aria-label="Mobile navigation menu"
           >
             <div className="container px-4 py-3 flex flex-col space-y-2">
               <Link

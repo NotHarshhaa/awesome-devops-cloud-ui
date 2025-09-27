@@ -212,28 +212,33 @@ export default function ItemList({
     (option: SortOption) => {
       setSortOption(option);
 
-      const sorted = sortItems(
-        filteredItems.filter((item) => {
-          if (
-            selectedCategories.length > 0 &&
-            !selectedCategories.includes(item.category)
-          ) {
-            return false;
-          }
+      try {
+        const sorted = sortItems(
+          filteredItems.filter((item) => {
+            if (
+              selectedCategories.length > 0 &&
+              !selectedCategories.includes(item.category)
+            ) {
+              return false;
+            }
 
-          if (debouncedSearchQuery) {
-            const lowercaseQuery = debouncedSearchQuery.toLowerCase();
-            return (
-              (item.name?.toLowerCase() || "").includes(lowercaseQuery) ||
-              (item.description?.toLowerCase() || "").includes(lowercaseQuery)
-            );
-          }
+            if (debouncedSearchQuery) {
+              const lowercaseQuery = debouncedSearchQuery.toLowerCase();
+              return (
+                (item.name?.toLowerCase() || "").includes(lowercaseQuery) ||
+                (item.description?.toLowerCase() || "").includes(lowercaseQuery)
+              );
+            }
 
-          return true;
-        }),
-      );
+            return true;
+          }),
+        );
 
-      setFilteredItems(sorted);
+        setFilteredItems(sorted);
+      } catch (error) {
+        console.error("Error sorting items:", error);
+        setError("An error occurred while sorting items. Please try again.");
+      }
     },
     [filteredItems, sortItems, selectedCategories, debouncedSearchQuery],
   );

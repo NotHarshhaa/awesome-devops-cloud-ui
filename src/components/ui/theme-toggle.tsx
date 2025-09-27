@@ -26,9 +26,11 @@ export function ModeToggle() {
       <Button
         variant="outline"
         size="icon"
-        className="relative h-9 w-9 rounded-lg border transition-colors"
+        className="relative h-9 w-9 rounded-lg border transition-colors theme-transition"
+        aria-label="Loading theme toggle"
       >
-        <span className="sr-only">Toggle theme</span>
+        <div className="h-[1.2rem] w-[1.2rem] animate-pulse bg-muted-foreground/20 rounded" />
+        <span className="sr-only">Loading theme toggle</span>
       </Button>
     );
   }

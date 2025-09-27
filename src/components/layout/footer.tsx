@@ -201,29 +201,33 @@ export function Footer() {
 
             {/* Mobile: Legal dropdown, Desktop: Links */}
             <div className="flex justify-center md:justify-end">
-              {/* Mobile Legal Dropdown */}
-              <div className="md:hidden">
-                <motion.button
-                  onClick={() => setShowLegal(!showLegal)}
-                  className="text-xs font-medium px-3 py-1.5 border rounded-md text-muted-foreground hover:text-foreground transition-colors duration-200"
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Legal & Policies
-                </motion.button>
+            {/* Mobile Legal Dropdown */}
+            <div className="md:hidden relative">
+              <motion.button
+                onClick={() => setShowLegal(!showLegal)}
+                className="text-xs font-medium px-3 py-1.5 border rounded-md text-muted-foreground hover:text-foreground transition-colors duration-200"
+                whileTap={{ scale: 0.98 }}
+                aria-expanded={showLegal}
+                aria-haspopup="true"
+              >
+                Legal & Policies
+              </motion.button>
 
-                <AnimatePresence>
-                  {showLegal && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute z-10 mt-2 py-1 bg-background border rounded-md shadow-lg"
-                      style={{
-                        width: "200px",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                      }}
-                    >
+              <AnimatePresence>
+                {showLegal && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute z-20 mt-2 py-1 bg-background border rounded-md shadow-lg"
+                    style={{
+                      width: "200px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                    }}
+                    role="menu"
+                    aria-label="Legal and policy options"
+                  >
                       <button
                         onClick={() => {
                           setShowPrivacy(true);
